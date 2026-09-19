@@ -47,10 +47,28 @@ export default {
           800: '#362b31',
           900: '#241c20', // Brand Deep Charcoal Ink
         },
+        berry: {
+          50: '#fef2f6',
+          100: '#fde6ee',
+          200: '#fbcfe0',
+          300: '#f8a8c5',
+          400: '#f273a0',
+          500: '#e8336d', // Sweet Strawberry Pink from Flyer
+          600: '#d81b60',
+          700: '#b8104c',
+          800: '#991141',
+          900: '#80133a',
+        },
+        chocolate: {
+          800: '#4a1c27',
+          900: '#38161f', // Deep Cocoa Flyer Base
+          950: '#240d14',
+        },
         borderLine: '#eadfd5',
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        script: ['"Caveat"', '"Great Vibes"', 'cursive'],
         sans: ['"Plus Jakarta Sans"', '"DM Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {

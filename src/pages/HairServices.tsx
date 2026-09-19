@@ -17,13 +17,13 @@ export const HairServices: React.FC = () => {
       : hairServices.filter((s) => s.category === activeCategory);
 
   const categories = [
-    { id: 'all', label: 'All Styles' },
-    { id: 'braids', label: 'Knotless & Box Braids' },
+    { id: 'all', label: 'All 12 Styles' },
+    { id: 'braids', label: 'Nutted & Nut-less Braids' },
     { id: 'twists', label: 'Passion & Kinky Twists' },
-    { id: 'weaving', label: 'Ghana Weaving & Cornrows' },
-    { id: 'locs', label: 'Locs & Dread Relock' },
-    { id: 'wigs', label: 'Wigs & Revamp' },
-    { id: 'natural', label: 'Natural & Ponytails' },
+    { id: 'weaving', label: 'Ganna Weaving & Cornrows' },
+    { id: 'locs', label: 'Locs & Dreads Relock' },
+    { id: 'wigs', label: 'Making Wigs & Revamp' },
+    { id: 'natural', label: 'Threading, Ponytail & Packing Gel' },
   ];
 
   return (
@@ -33,21 +33,20 @@ export const HairServices: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-wine-50 text-wine-900 border border-wine-200 text-xs font-bold uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5 text-gold-600" />
-            <span>Vicky's Hairplace • Professional Styling</span>
+            <span>Vikky's Hairplace • Master Artistry</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink-900 leading-tight">
-            Hair That Crowns Your Confidence
+            Transforming Your Hair.{' '}
+            <span className="italic font-serif text-wine-900 font-normal">Revealing Your Beauty.</span>
           </h1>
 
           <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
-            Experience painless, tension-free braiding that protects your hairline, locs maintenance,
-            and custom wig construction. Available at our studios in Lokoja &amp; Abuja, or right in
-            the comfort of your home.
+            From pain-free knotless braids to traditional African threading, dreads relock, and custom wig construction. Experience edge-protective salon care or doorstep home service across <strong className="text-wine-900">Lokoja</strong> &amp; <strong className="text-wine-900">Abuja</strong>.
           </p>
         </div>
 
-        {/* Home Service Banner */}
+        {/* Home Service & Official Flyer Banner */}
         <div className="mb-12 rounded-3xl bg-gradient-to-r from-wine-900 via-wine-950 to-wine-900 text-white p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-gold-500/30">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-white/10 text-gold-400 flex items-center justify-center font-bold text-2xl shrink-0">
@@ -55,30 +54,31 @@ export const HairServices: React.FC = () => {
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-widest text-gold-400">
-                VIP Convenience
+                VIP Salon &amp; Home Service
               </span>
               <h3 className="font-serif text-xl sm:text-2xl font-bold">
-                Book Vicky's Luxury Home Service
+                Book Vicky's Luxury Doorstep Service
               </h3>
               <p className="text-xs text-cream-200/90 mt-1 max-w-xl">
-                Skip traffic and salon wait times. Our master stylists come equipped with all
-                necessary styling tools directly to your home in Lokoja or Abuja.
+                Skip salon wait times. Our master stylists bring professional tools directly to your home in Lokoja or Abuja for stress-free styling.
               </p>
             </div>
           </div>
 
-          <button
-            onClick={() =>
-              openWhatsApp(
-                settings.whatsappNumber,
-                'Hello Vicky! I would like to inquire about home service hairstyling.'
-              )
-            }
-            className="px-6 py-3.5 rounded-2xl bg-gold-400 hover:bg-gold-500 text-ink-950 font-bold text-xs shadow-md transition-all whitespace-nowrap flex items-center gap-2 shrink-0"
-          >
-            <MessageCircle className="w-4 h-4 text-ink-950" />
-            <span>Chat via WhatsApp</span>
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() =>
+                openWhatsApp(
+                  settings.whatsappNumber,
+                  'Hello Vicky! I would like to book a hair service appointment.'
+                )
+              }
+              className="px-6 py-3.5 rounded-2xl bg-gold-400 hover:bg-gold-500 text-ink-950 font-bold text-xs shadow-md transition-all whitespace-nowrap flex items-center gap-2 shrink-0"
+            >
+              <MessageCircle className="w-4 h-4 text-ink-950" />
+              <span>Book via WhatsApp</span>
+            </button>
+          </div>
         </div>
 
         {/* Category Filters */}

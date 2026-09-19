@@ -25,17 +25,57 @@ export const CakesPastries: React.FC = () => {
     <div className="bg-[#fffdfa] min-h-screen py-10 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-10">
           <span className="text-xs font-extrabold uppercase tracking-widest text-wine-900 block mb-1">
-            Artisanal Confectionery
+            Artisanal Confectionery by CEO Lanishe
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-bold text-ink-900">
             Cakes &amp; Fresh Pastries
           </h1>
-          <p className="mt-3 text-sm text-ink-500">
-            Slow-baked with premium European butter, real Madagascar vanilla, and pure cocoa.
-            Celebration cakes, mini bentos, and savory snacks.
+          <p className="font-script text-2xl sm:text-3xl text-wine-900 mt-2">
+            "Life is what you bake it. We just make it sweeter! ❤️"
           </p>
+          <p className="mt-2 text-sm text-ink-500 max-w-xl mx-auto">
+            From Korean aesthetic bento cakes and signature foil pan comfort cakes to grand celebration tiers, freshly baked with European butter and rich Dutch cocoa.
+          </p>
+        </div>
+
+        {/* 8 Signature Flavours Strip */}
+        <div className="mb-12 p-6 rounded-3xl bg-cream-100/70 border border-gold-400/30">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-wine-900 block">
+                Official Cake Collection
+              </span>
+              <h3 className="font-serif text-lg font-bold text-ink-900">
+                8 Authentic Flavours Handcrafted Daily
+              </h3>
+            </div>
+            <span className="text-xs font-semibold text-ink-500">
+              Selectable in any custom cake size or foil pan
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            {[
+              { name: 'Coconut', emoji: '🥥', color: 'bg-white' },
+              { name: 'Strawberry', emoji: '🍓', color: 'bg-berry-50 border-berry-200' },
+              { name: 'Banana Bread', emoji: '🍌', color: 'bg-amber-50 border-amber-200' },
+              { name: 'Banana Cake', emoji: '🍌', color: 'bg-amber-50/70 border-amber-200' },
+              { name: 'Red Velvet', emoji: '❤️', color: 'bg-rose-50 border-rose-200' },
+              { name: 'Vanilla', emoji: '🍦', color: 'bg-cream-50 border-cream-200' },
+              { name: 'Chocolate', emoji: '🍫', color: 'bg-amber-100/60 border-amber-300' },
+              { name: 'Marble', emoji: '🍰', color: 'bg-stone-50 border-stone-200' },
+            ].map((flv) => (
+              <div
+                key={flv.name}
+                className={`p-3 rounded-2xl border text-center flex flex-col items-center justify-center gap-1 shadow-xs ${flv.color}`}
+              >
+                <span className="text-xl">{flv.emoji}</span>
+                <span className="text-xs font-bold text-ink-900 leading-tight">{flv.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Prominent Custom Cake Builder Callout Card */}

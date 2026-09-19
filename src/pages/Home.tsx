@@ -12,6 +12,8 @@ import {
   ArrowRight,
   Heart,
   Star,
+  Cake,
+  Award,
 } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { ProductCard } from '../components/products/ProductCard';
@@ -107,20 +109,20 @@ export const Home: React.FC = () => {
             {/* Right Visual Composition */}
             <div className="lg:col-span-5 relative">
               <div className="relative mx-auto max-w-md lg:max-w-none">
-                {/* Main Hero Card (Cake Showcase) */}
+                {/* Main Hero Card (CEO Lanishe Showcase) */}
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-cream-100 aspect-[4/5]">
                   <img
-                    src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=800&auto=format&fit=crop&q=80"
-                    alt="Lanivick Signature Cake"
-                    className="w-full h-full object-cover"
+                    src="/images/ceo-lanishe-pink.jpg"
+                    alt="Danladi Victoria Lanishe - CEO Lanishe"
+                    className="w-full h-full object-cover object-top"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/25 to-transparent flex flex-col justify-end p-6 text-white">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-gold-400">
-                      Signature Collection
+                      Founder &amp; Master Artisan
                     </span>
-                    <h3 className="font-serif text-2xl font-bold">Vanilla Celebration Crown</h3>
-                    <p className="text-xs text-cream-200 mt-1">
-                      Available for delivery across Lokoja &amp; Abuja
+                    <h3 className="font-serif text-2xl font-bold">Danladi Victoria Lanishe</h3>
+                    <p className="font-script text-xl text-cream-200 mt-1">
+                      "{settings.ceoQuote}"
                     </p>
                   </div>
                 </div>
@@ -132,7 +134,7 @@ export const Home: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-serif text-sm font-bold text-ink-900">Vicky's Hairplace</h4>
-                    <p className="text-[11px] text-ink-500">Knotless Braids, Locs &amp; Wigs</p>
+                    <p className="text-[11px] text-ink-500">Nut-less Braids, Locs &amp; Wigs</p>
                     <span className="text-[10px] font-bold text-emerald-700">Home Service Ready</span>
                   </div>
                 </div>
@@ -194,6 +196,123 @@ export const Home: React.FC = () => {
               <div>
                 <h4 className="font-bold text-sm text-gold-300">Special Occasions</h4>
                 <p className="text-xs text-cream-200/80">Weddings, birthdays &amp; surprises</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2.5 CEO LANISHE SPOTLIGHT & AUTHENTIC MENU SPOTLIGHT */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-cream-50 via-white to-cream-50 border-b border-borderLine relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left: Authentic CEO Photo Card */}
+            <div className="lg:col-span-5">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-cream-100 group">
+                <img
+                  src="/images/ceo-lanishe-main.jpg"
+                  alt="Danladi Victoria Lanishe - CEO Lanishe"
+                  className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-wine-950 via-wine-950/70 to-transparent p-6 text-white">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/20 text-gold-300 border border-gold-400/30 text-[10px] font-bold uppercase tracking-widest mb-1.5 backdrop-blur-sm">
+                    <Award className="w-3.5 h-3.5" />
+                    <span>Founder &amp; Creative Mastermind</span>
+                  </div>
+                  <h3 className="font-serif text-2xl font-bold">Danladi Victoria Lanishe</h3>
+                  <p className="text-xs text-cream-200">
+                    Artisan Baker &amp; Master Hairstylist • Lokoja &amp; Abuja
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Signature Brand Philosophy & Services */}
+            <div className="lg:col-span-7 flex flex-col justify-center">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-gold-600 block mb-2">
+                Meet The Artisan
+              </span>
+
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-900 leading-tight">
+                "Life is what you bake it.{' '}
+                <span className="font-script text-3xl sm:text-5xl text-wine-900 block sm:inline font-normal">
+                  We just make it sweeter!"
+                </span>
+              </h2>
+
+              <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
+                Welcome to the world of <strong className="text-wine-900">CEO Lanishe</strong>. Here, every recipe is infused with genuine passion, wholesome ingredients, and artisanal perfection. From intimate mini bento boxes to majestic multi-tier wedding cakes, and gentle, tension-free crown hairstyling at <strong className="text-wine-900">Vicky's Hairplace</strong>.
+              </p>
+
+              {/* The 8 Official Cake Flavours from Flyer 4 */}
+              <div className="mt-6 p-5 rounded-2xl bg-cream-100/80 border border-gold-400/30">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-wine-900 block mb-2.5 flex items-center gap-1.5">
+                  <Cake className="w-4 h-4 text-wine-900" />
+                  <span>8 Authentic Signature Flavours Handcrafted by CEO Lanishe:</span>
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { name: 'Coconut', emoji: '🥥' },
+                    { name: 'Strawberry', emoji: '🍓' },
+                    { name: 'Banana Bread', emoji: '🍌' },
+                    { name: 'Banana Cake', emoji: '🍌' },
+                    { name: 'Red Velvet', emoji: '❤️' },
+                    { name: 'Vanilla', emoji: '🍦' },
+                    { name: 'Chocolate', emoji: '🍫' },
+                    { name: 'Marble', emoji: '🍰' },
+                  ].map((flv) => (
+                    <span
+                      key={flv.name}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-ink-900 font-bold text-xs border border-borderLine shadow-xs"
+                    >
+                      <span>{flv.emoji}</span>
+                      <span>{flv.name}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Confectionery + Hair Highlights Grid */}
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-white border border-borderLine shadow-xs">
+                  <h4 className="font-serif text-sm font-bold text-wine-900 flex items-center gap-2 mb-2">
+                    <span>🎂</span>
+                    <span>Lanivick Confectionary Menu</span>
+                  </h4>
+                  <p className="text-xs text-ink-500 leading-relaxed">
+                    Naked Cakes, Decorated Cakes, Cup Cakes, Foil Pan Cakes, Bento Cakes, Boxes of 6 &amp; 12, Fruit Parfaits &amp; Gourmet Banana Bread.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-white border border-borderLine shadow-xs">
+                  <h4 className="font-serif text-sm font-bold text-wine-900 flex items-center gap-2 mb-2">
+                    <span>💇🏾‍♀️</span>
+                    <span>Vikky's Hairplace Artistry</span>
+                  </h4>
+                  <p className="text-xs text-ink-500 leading-relaxed">
+                    Nut-less Braids, Nutted Braids, Twists, Ganna Weaving, Cornrows, Locs Retwist, Threading, Packing Gel, Making Wigs &amp; Home Service.
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/about"
+                  className="px-6 py-3 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
+                >
+                  <span>Read Full CEO Story</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+
+                <a
+                  href={`https://facebook.com/search/top?q=${encodeURIComponent(settings.facebookPage || 'Danladi Victoria Lanishe')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-2xl bg-white hover:bg-cream-50 text-ink-900 font-bold text-xs border border-borderLine transition-all flex items-center gap-2 shadow-xs"
+                >
+                  <span>Facebook: {settings.facebookPage}</span>
+                </a>
               </div>
             </div>
           </div>
@@ -394,11 +513,10 @@ export const Home: React.FC = () => {
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-900">
               Transforming Your Hair.{' '}
-              <em className="italic text-wine-900 font-normal">Revealing Your Radiance.</em>
+              <span className="italic font-serif text-wine-900 font-normal">Revealing Your Beauty.</span>
             </h2>
             <p className="mt-3 text-sm text-ink-500">
-              Gentle tension-free braids, locs retwist, customized frontal wigs, and luxury home
-              service across Lokoja and Abuja.
+              Nutted &amp; Nut-less braids, Twisting, Cornrows, Locs, Ganna Weaving, Threading, Packing Gel, Ponytail, Wigs &amp; Dreads Relock with luxury home service across Lokoja &amp; Abuja.
             </p>
           </div>
 

@@ -78,7 +78,7 @@ export const Navbar: React.FC = () => {
                   Lanivick
                 </span>
                 <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-ink-500 mt-1">
-                  Confectionary & Vicky's Hair
+                  Confectionary &amp; Vikky's Hairplace
                 </span>
               </div>
             </Link>

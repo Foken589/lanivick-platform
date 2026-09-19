@@ -34,10 +34,12 @@ const SIZES: OptionItem[] = [
 const FLAVOURS: OptionItem[] = [
   { id: 'vanilla', name: 'Madagascar Velvet Vanilla', priceDelta: 0 },
   { id: 'chocolate', name: 'Rich Belgian Chocolate', priceDelta: 0 },
+  { id: 'strawberry', name: 'Fresh Strawberry Sweetness', priceDelta: 2000 },
   { id: 'redvelvet', name: 'Royal Red Velvet', priceDelta: 2000 },
+  { id: 'coconut', name: 'Exotic Coconut Cream', priceDelta: 2000 },
+  { id: 'bananabread', name: 'Gourmet Banana Bread Sponge', priceDelta: 2500 },
+  { id: 'bananacake', name: 'Golden Moist Banana Cake', priceDelta: 2000 },
   { id: 'marble', name: 'Marble Swirl (Vanilla & Chocolate)', priceDelta: 1500 },
-  { id: 'carrot', name: 'Spiced Carrot with Crushed Walnuts', priceDelta: 3000 },
-  { id: 'coconut', name: 'Coconut Dream Sponge', priceDelta: 2000 },
 ];
 
 const FILLINGS: OptionItem[] = [

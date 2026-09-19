@@ -197,6 +197,11 @@ export interface StoreSettings {
   deliveryFeeLokoja: number;
   deliveryFeeAbuja: number;
   homeServiceHairSurcharge: number;
+  ceoName?: string;
+  ceoTitle?: string;
+  ceoQuote?: string;
+  hairTagline?: string;
+  facebookPage?: string;
 }
 
 export interface UserProfile {
