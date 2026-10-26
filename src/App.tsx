@@ -7,16 +7,17 @@ import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { CartDrawer } from './components/cart/CartDrawer';
+import { AppInstallBanner } from './components/common/AppInstallBanner';
 import { Home } from './pages/Home';
 import { OrderOnline } from './pages/OrderOnline';
 import { CakesPastries } from './pages/CakesPastries';
 import { Catering } from './pages/Catering';
-import { HairServices } from './pages/HairServices';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { Auth } from './pages/Auth';
 import { CustomerDashboard } from './pages/CustomerDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { MobileApp } from './pages/MobileApp';
 import { dataService } from './services/dataService';
 import { openWhatsApp } from './services/whatsappService';
 
@@ -48,13 +49,19 @@ export const App: React.FC = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/order" element={<OrderOnline />} />
                   <Route path="/cakes" element={<CakesPastries />} />
+                  <Route path="/services" element={<Catering />} />
+                  <Route path="/packages" element={<Catering />} />
                   <Route path="/catering" element={<Catering />} />
-                  <Route path="/hair" element={<HairServices />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
+                  <Route path="/mobile-app" element={<MobileApp />} />
+                  <Route path="/app" element={<MobileApp />} />
+                  <Route path="/download" element={<MobileApp />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/dashboard" element={<CustomerDashboard />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+                  {/* Clean fallback for any legacy hair link */}
+                  <Route path="/hair" element={<Navigate to="/" replace />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </main>
@@ -62,13 +69,16 @@ export const App: React.FC = () => {
               {/* Cart Drawer */}
               <CartDrawer />
 
+              {/* Mobile App Install Trigger & Guide */}
+              <AppInstallBanner />
+
               {/* Floating WhatsApp Action Button */}
               <aside aria-label="WhatsApp customer support" className="fixed bottom-6 left-6 z-40">
                 <button
                   onClick={() =>
                     openWhatsApp(
                       settings.whatsappNumber,
-                      'Hello Lanivick! I am browsing your website and have a question.'
+                      'Hello Lanivick Confectionary! I am browsing your website and have an enquiry.'
                     )
                   }
                   className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-elevated border-2 border-white transition-all transform hover:scale-105 active:scale-95"

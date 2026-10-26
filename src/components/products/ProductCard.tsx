@@ -14,6 +14,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addItem, openCart } = useCart();
   const { currentUser, toggleFavorite } = useAuth();
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const isFav = currentUser?.favorites?.includes(product.id) || false;
 
@@ -31,12 +32,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <article className="group relative bg-white rounded-3xl overflow-hidden border border-borderLine shadow-soft hover:shadow-luxury transition-all duration-300 flex flex-col justify-between">
         {/* Top Media */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream-100">
-          <img
-            src={product.image}
-            alt={product.name}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+          {!imgError ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-cream-100 via-cream-50 to-cream-200 text-ink-700 p-4">
+              <span className="text-5xl mb-2 filter drop-shadow-sm select-none">{product.emoji || '🧁'}</span>
+              <span className="font-serif text-xs font-bold text-wine-900 text-center tracking-wide line-clamp-1">{product.name}</span>
+            </div>
+          )}
 
           {/* Floating Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">

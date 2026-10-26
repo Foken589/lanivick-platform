@@ -8,12 +8,15 @@ import {
   ShieldCheck,
   PhoneCall,
   MapPin,
+  Mail,
   Sparkles,
   ChevronDown,
+  Smartphone,
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { dataService } from '../../services/dataService';
+import { triggerAppInstall } from '../common/AppInstallBanner';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,9 +30,9 @@ export const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Order Online', path: '/order' },
     { name: 'Cakes & Pastries', path: '/cakes' },
-    { name: 'Catering', path: '/catering' },
-    { name: 'Hair Services', path: '/hair' },
-    { name: 'About', path: '/about' },
+    { name: 'Our Services', path: '/services' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Mobile App', path: '/mobile-app' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -46,13 +49,20 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-gold-400 shrink-0" />
-            <span>{settings.announcement}</span>
+            <span className="truncate">{settings.announcement}</span>
           </div>
-          <div className="flex items-center gap-4 text-cream-200">
+          <div className="flex items-center gap-4 text-cream-200 shrink-0">
             <span className="flex items-center gap-1.5">
               <MapPin className="w-3 h-3 text-gold-400" />
-              <span>Lokoja & Abuja</span>
+              <span>Area G, Pyakasa, Abuja</span>
             </span>
+            <a
+              href={`mailto:${settings.email}`}
+              className="flex items-center gap-1.5 hover:text-gold-300 transition-colors"
+            >
+              <Mail className="w-3 h-3 text-gold-400" />
+              <span>{settings.email}</span>
+            </a>
             <a
               href={`tel:${settings.callPhone}`}
               className="flex items-center gap-1.5 hover:text-gold-300 transition-colors"
@@ -60,6 +70,14 @@ export const Navbar: React.FC = () => {
               <PhoneCall className="w-3 h-3 text-gold-400" />
               <span>{settings.callPhone}</span>
             </a>
+            <button
+              onClick={triggerAppInstall}
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gold-400/20 hover:bg-gold-400/30 text-gold-300 hover:text-white border border-gold-400/40 text-[10px] font-bold transition-all cursor-pointer shadow-xs"
+              title="Install Mobile App on iPhone or Android"
+            >
+              <Smartphone className="w-3 h-3 text-gold-400" />
+              <span>📱 Install App</span>
+            </button>
           </div>
         </div>
       </div>
@@ -78,7 +96,7 @@ export const Navbar: React.FC = () => {
                   Lanivick
                 </span>
                 <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-ink-500 mt-1">
-                  Confectionary &amp; Vikky's Hairplace
+                  Confectionary • Abuja
                 </span>
               </div>
             </Link>
@@ -121,44 +139,44 @@ export const Navbar: React.FC = () => {
                     </button>
 
                     {userDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white shadow-elevated border border-borderLine p-2 z-50 animate-in fade-in">
-                        <div className="px-3 py-2 border-b border-borderLine">
-                          <p className="text-xs font-bold text-ink-900 truncate">{currentUser.name}</p>
+                      <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white shadow-elevated border border-borderLine py-2 z-50 animate-in fade-in zoom-in-95">
+                        <div className="px-4 py-2 border-b border-borderLine/80">
+                          <p className="text-xs font-bold text-ink-900 truncate">
+                            {currentUser.name}
+                          </p>
                           <p className="text-[11px] text-ink-500 truncate">{currentUser.email}</p>
-                          <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold rounded-full bg-wine-50 text-wine-900 uppercase">
+                          <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gold-100 text-gold-900">
                             {currentUser.role}
                           </span>
                         </div>
 
-                        <div className="py-1">
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-ink-800 hover:bg-cream-50 transition-colors"
+                        >
+                          <User className="w-4 h-4 text-wine-900" />
+                          <span>My Customer Dashboard</span>
+                        </Link>
+
+                        {isAdmin && (
                           <Link
-                            to="/dashboard"
+                            to="/admin"
                             onClick={() => setUserDropdownOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-ink-800 hover:bg-cream-100 rounded-lg"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-bold text-gold-700 bg-gold-50/50 hover:bg-gold-50 transition-colors"
                           >
-                            <User className="w-4 h-4 text-wine-900" />
-                            Customer Dashboard
+                            <ShieldCheck className="w-4 h-4 text-gold-600" />
+                            <span>Admin Management</span>
                           </Link>
+                        )}
 
-                          {isAdmin && (
-                            <Link
-                              to="/admin"
-                              onClick={() => setUserDropdownOpen(false)}
-                              className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-wine-900 hover:bg-wine-50 rounded-lg font-bold"
-                            >
-                              <ShieldCheck className="w-4 h-4 text-wine-900" />
-                              Admin Portal
-                            </Link>
-                          )}
-                        </div>
-
-                        <div className="border-t border-borderLine pt-1">
+                        <div className="border-t border-borderLine/80 mt-1 pt-1">
                           <button
                             onClick={() => {
                               logout();
                               setUserDropdownOpen(false);
                             }}
-                            className="w-full text-left px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg"
+                            className="w-full text-left px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
                           >
                             Sign Out
                           </button>
@@ -169,7 +187,7 @@ export const Navbar: React.FC = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold text-wine-900 hover:bg-wine-50 border border-wine-200 transition-colors"
+                    className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-wine-900 hover:bg-cream-100 transition-colors"
                   >
                     <User className="w-4 h-4" />
                     <span>Sign In</span>
@@ -177,23 +195,25 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
 
-              {/* Cart Button */}
+              {/* Shopping Bag Button */}
               <button
                 onClick={openCart}
-                className="relative flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-wine-900 text-white font-bold text-sm shadow-md hover:bg-wine-800 transition-all active:scale-95"
-                aria-label="View Cart"
+                className="relative flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95"
+                aria-label="View shopping cart"
               >
                 <ShoppingBag className="w-4 h-4 text-gold-400" />
-                <span className="hidden sm:inline">Cart</span>
-                <span className="w-5 h-5 rounded-full bg-gold-400 text-ink-900 text-[11px] font-black flex items-center justify-center">
-                  {itemCount}
-                </span>
+                <span className="hidden sm:inline">Bag</span>
+                {itemCount > 0 && (
+                  <span className="flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gold-400 text-ink-950 font-extrabold text-[11px]">
+                    {itemCount}
+                  </span>
+                )}
               </button>
 
-              {/* Mobile Hamburger */}
+              {/* Mobile Hamburger Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-xl text-ink-800 hover:bg-cream-100 border border-borderLine"
+                className="lg:hidden p-2 rounded-xl text-ink-800 hover:bg-cream-100 transition-colors"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -221,30 +241,45 @@ export const Navbar: React.FC = () => {
                 </Link>
               ))}
 
+              {/* Mobile App Install Card in Drawer */}
+              <div className="mt-3 p-3.5 rounded-2xl bg-gradient-to-br from-wine-950 via-wine-900 to-wine-950 text-white border border-gold-400/40 shadow-md">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 p-0.5 shrink-0 shadow-sm">
+                      <img
+                        src="/icons/icon-192x192.png"
+                        alt="Lanivick App"
+                        className="w-full h-full object-cover rounded-[10px]"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-serif font-bold text-xs text-white">Lanivick Mobile App</div>
+                      <div className="text-[10px] text-gold-300 font-bold">₦1,000 Off First Order</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      triggerAppInstall();
+                    }}
+                    className="px-3.5 py-1.5 rounded-xl bg-gold-400 hover:bg-gold-300 text-ink-950 font-black text-xs shadow-sm transition-transform active:scale-95 cursor-pointer"
+                  >
+                    Install App
+                  </button>
+                </div>
+              </div>
+
               <div className="mt-4 pt-4 border-t border-borderLine flex flex-col gap-2">
                 <div className="text-xs font-bold text-ink-500 uppercase tracking-wider px-2">
-                  Quick Demo Access
+                  Account Access
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => {
-                      loginDemoCustomer();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="px-3 py-2 text-xs font-bold rounded-lg border border-borderLine bg-cream-50 text-ink-800 hover:bg-cream-100"
-                  >
-                    Demo Customer
-                  </button>
-                  <button
-                    onClick={() => {
-                      loginDemoAdmin();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="px-3 py-2 text-xs font-bold rounded-lg border border-wine-300 bg-wine-50 text-wine-900 hover:bg-wine-100"
-                  >
-                    Demo Admin
-                  </button>
-                </div>
+                <Link
+                  to="/auth"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-2.5 px-4 text-center rounded-xl bg-wine-900 text-white font-bold text-xs shadow-sm"
+                >
+                  Sign In / Create Account
+                </Link>
                 {isAdmin && (
                   <Link
                     to="/admin"

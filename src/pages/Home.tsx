@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Sparkles,
-  Scissors,
   ShoppingBag,
-  Clock,
   MapPin,
   MessageCircle,
   Phone,
@@ -14,23 +12,27 @@ import {
   Star,
   Cake,
   Award,
+  Gift,
+  Coffee,
+  GraduationCap,
+  Smartphone,
+  Download,
 } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { ProductCard } from '../components/products/ProductCard';
-import { HairServiceCard } from '../components/hair/HairServiceCard';
 import { CateringQuoteModal } from '../components/catering/CateringQuoteModal';
 import { openWhatsApp } from '../services/whatsappService';
+import { triggerAppInstall } from '../components/common/AppInstallBanner';
 
 export const Home: React.FC = () => {
   const settings = dataService.getSettings();
   const products = dataService.getProducts();
-  const hairServices = dataService.getHairServices();
   const reviews = dataService.getReviews();
   const gallery = dataService.getGallery();
 
-  const [activeCategory, setActiveCategory] = useState<'all' | 'cakes' | 'pastries' | 'meals' | 'treats'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'cakes' | 'pastries' | 'snacks' | 'drinks' | 'packages'>('all');
   const [isCateringModalOpen, setIsCateringModalOpen] = useState(false);
-  const [galleryFilter, setGalleryFilter] = useState<'all' | 'cakes' | 'hair' | 'catering' | 'pastries'>('all');
+  const [galleryFilter, setGalleryFilter] = useState<'all' | 'cakes' | 'pastries'>('all');
 
   const filteredProducts =
     activeCategory === 'all'
@@ -44,7 +46,7 @@ export const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-0">
-      {/* 1. LUXURY DUAL HERO */}
+      {/* 1. LUXURY CONFECTIONERY HERO */}
       <section className="relative overflow-hidden bg-radial-gradient pt-12 pb-20 lg:pt-20 lg:pb-28 border-b border-borderLine">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -52,40 +54,47 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-7 flex flex-col items-start">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-100 border border-gold-400/40 text-wine-900 text-xs font-black uppercase tracking-widest mb-6 shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-                <span>Cakes • Pastries • Catering • Hair</span>
+                <span>Handcrafted Cakes &amp; Pastries.</span>
               </div>
 
               <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-ink-900 tracking-tight leading-[1.06]">
-                Made with love.{' '}
+                Premium Taste • Healthy Treats • Perfect Craft.{' '}
                 <em className="italic font-serif text-wine-900 font-normal block sm:inline">
-                  Served with style.
+                  Baked with Passion.
                 </em>
               </h1>
 
               <p className="mt-6 text-base sm:text-lg text-ink-500 max-w-2xl leading-relaxed">
-                Handcrafted celebration cakes, melt-in-the-mouth pastries, traditional Nigerian party
-                catering, and master salon hairstyling — all under one trusted, luxury experience in
-                <strong className="text-wine-900"> Lokoja</strong> &amp;{' '}
-                <strong className="text-wine-900">Abuja</strong>.
+                Artisan celebration cakes, flaky golden pies, wholesome natural fruit drinks, and
+                corporate snack catering — baked fresh daily in{' '}
+                <strong className="text-wine-900">Area G, Pyakasa, Abuja</strong>.
               </p>
 
-              {/* High-Converting Dual Action Buttons */}
+              {/* Action Buttons */}
               <div className="mt-8 flex flex-wrap items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
                 <Link
                   to="/order"
                   className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-sm shadow-elevated transition-all flex items-center justify-center gap-2.5 group active:scale-98"
                 >
                   <ShoppingBag className="w-4 h-4 text-gold-400" />
-                  <span>Order Something Delicious</span>
+                  <span>Order Fresh Treats</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
 
                 <Link
-                  to="/hair"
+                  to="/cakes"
                   className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white hover:bg-cream-50 text-wine-900 font-bold text-sm border-2 border-wine-900/20 hover:border-wine-900 transition-all flex items-center justify-center gap-2.5 shadow-sm active:scale-98"
                 >
-                  <Scissors className="w-4 h-4 text-gold-600" />
-                  <span>Book a Hair Service</span>
+                  <Cake className="w-4 h-4 text-gold-600" />
+                  <span>Design Custom Cake</span>
+                </Link>
+
+                <Link
+                  to="/services"
+                  className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-cream-100 hover:bg-cream-200 text-ink-900 font-bold text-xs border border-gold-400/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <Gift className="w-4 h-4 text-wine-900" />
+                  <span>Services &amp; Packages</span>
                 </Link>
               </div>
 
@@ -97,11 +106,11 @@ export const Home: React.FC = () => {
                 </span>
                 <span className="flex items-center gap-1.5 text-ink-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Premium Butter &amp; Pure Flavours
+                  Pure Butter &amp; Hygienic Kitchen
                 </span>
                 <span className="flex items-center gap-1.5 text-ink-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Master Salon &amp; Home Service
+                  Same-Day Abuja Delivery
                 </span>
               </div>
             </div>
@@ -109,33 +118,33 @@ export const Home: React.FC = () => {
             {/* Right Visual Composition */}
             <div className="lg:col-span-5 relative">
               <div className="relative mx-auto max-w-md lg:max-w-none">
-                {/* Main Hero Card (CEO Lanishe Showcase) */}
+                {/* Main Hero Card (CEO Victoria Lanishe Showcase) */}
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-cream-100 aspect-[4/5]">
                   <img
                     src="/images/ceo-lanishe-pink.jpg"
-                    alt="Danladi Victoria Lanishe - CEO Lanishe"
+                    alt="Danladi Victoria Lanishe - Founder & Master Baker"
                     className="w-full h-full object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/25 to-transparent flex flex-col justify-end p-6 text-white">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-gold-400">
-                      Founder &amp; Master Artisan
+                      Founder &amp; Master Baker
                     </span>
                     <h3 className="font-serif text-2xl font-bold">Danladi Victoria Lanishe</h3>
                     <p className="font-script text-xl text-cream-200 mt-1">
-                      "{settings.ceoQuote}"
+                      "{settings.ceoQuote || 'Life is what you bake it. We just make it sweeter!'}"
                     </p>
                   </div>
                 </div>
 
-                {/* Overlapping Hair Stylist Floating Badge */}
+                {/* Overlapping Bakery Location Floating Badge */}
                 <div className="absolute -bottom-6 -left-6 sm:-left-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-elevated border border-borderLine flex items-center gap-3.5 max-w-[260px] animate-float">
                   <div className="w-12 h-12 rounded-xl bg-wine-900 text-gold-400 flex items-center justify-center font-bold shrink-0">
-                    <Scissors className="w-6 h-6" />
+                    <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm font-bold text-ink-900">Vicky's Hairplace</h4>
-                    <p className="text-[11px] text-ink-500">Nut-less Braids, Locs &amp; Wigs</p>
-                    <span className="text-[10px] font-bold text-emerald-700">Home Service Ready</span>
+                    <h4 className="font-serif text-sm font-bold text-ink-900">Pyakasa Bakery Hub</h4>
+                    <p className="text-[11px] text-ink-500">Area G, off Airport Road</p>
+                    <span className="text-[10px] font-bold text-emerald-700">Abuja Deliveries Daily</span>
                   </div>
                 </div>
 
@@ -145,7 +154,7 @@ export const Home: React.FC = () => {
                   <div>
                     <span className="font-serif text-base font-bold block leading-none">4.9 / 5</span>
                     <span className="text-[9px] text-gold-200 uppercase tracking-wider font-bold">
-                      500+ Happy Clients
+                      500+ Happy Customers
                     </span>
                   </div>
                 </div>
@@ -161,31 +170,31 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="flex items-center gap-3.5">
               <div className="w-11 h-11 rounded-2xl bg-wine-800/80 border border-gold-500/30 flex items-center justify-center text-xl shrink-0">
-                🍰
+                🎂
               </div>
               <div>
-                <h4 className="font-bold text-sm text-gold-300">Confectionery</h4>
-                <p className="text-xs text-cream-200/80">Cakes, parfaits &amp; pastries</p>
+                <h4 className="font-bold text-sm text-gold-300">Bespoke Cakes</h4>
+                <p className="text-xs text-cream-200/80">Birthday, wedding &amp; bento</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3.5">
               <div className="w-11 h-11 rounded-2xl bg-wine-800/80 border border-gold-500/30 flex items-center justify-center text-xl shrink-0">
-                🍲
+                🥧
               </div>
               <div>
-                <h4 className="font-bold text-sm text-gold-300">Party Catering</h4>
-                <p className="text-xs text-cream-200/80">Jollof, small chops &amp; buffets</p>
+                <h4 className="font-bold text-sm text-gold-300">Gourmet Pastries</h4>
+                <p className="text-xs text-cream-200/80">Flaky pies &amp; fluffy doughnuts</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3.5">
               <div className="w-11 h-11 rounded-2xl bg-wine-800/80 border border-gold-500/30 flex items-center justify-center text-xl shrink-0">
-                💇🏾‍♀️
+                🥤
               </div>
               <div>
-                <h4 className="font-bold text-sm text-gold-300">Vicky's Hairplace</h4>
-                <p className="text-xs text-cream-200/80">Braids, locs, twists &amp; wigs</p>
+                <h4 className="font-bold text-sm text-gold-300">Natural Drinks</h4>
+                <p className="text-xs text-cream-200/80">Juices, yogurt &amp; berry parfaits</p>
               </div>
             </div>
 
@@ -194,8 +203,8 @@ export const Home: React.FC = () => {
                 🎁
               </div>
               <div>
-                <h4 className="font-bold text-sm text-gold-300">Special Occasions</h4>
-                <p className="text-xs text-cream-200/80">Weddings, birthdays &amp; surprises</p>
+                <h4 className="font-bold text-sm text-gold-300">Snack Packs &amp; Chops</h4>
+                <p className="text-xs text-cream-200/80">Office breakfasts &amp; VIP small chops</p>
               </div>
             </div>
           </div>
@@ -211,17 +220,17 @@ export const Home: React.FC = () => {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-cream-100 group">
                 <img
                   src="/images/ceo-lanishe-main.jpg"
-                  alt="Danladi Victoria Lanishe - CEO Lanishe"
+                  alt="Danladi Victoria Lanishe - Founder & Master Baker"
                   className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-wine-950 via-wine-950/70 to-transparent p-6 text-white">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/20 text-gold-300 border border-gold-400/30 text-[10px] font-bold uppercase tracking-widest mb-1.5 backdrop-blur-sm">
                     <Award className="w-3.5 h-3.5" />
-                    <span>Founder &amp; Creative Mastermind</span>
+                    <span>Founder &amp; Creative Master Baker</span>
                   </div>
                   <h3 className="font-serif text-2xl font-bold">Danladi Victoria Lanishe</h3>
                   <p className="text-xs text-cream-200">
-                    Artisan Baker &amp; Master Hairstylist • Lokoja &amp; Abuja
+                    Proprietor, Lanivick Confectionary • Area G, Pyakasa, Abuja
                   </p>
                 </div>
               </div>
@@ -241,14 +250,14 @@ export const Home: React.FC = () => {
               </h2>
 
               <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
-                Welcome to the world of <strong className="text-wine-900">CEO Lanishe</strong>. Here, every recipe is infused with genuine passion, wholesome ingredients, and artisanal perfection. From intimate mini bento boxes to majestic multi-tier wedding cakes, and gentle, tension-free crown hairstyling at <strong className="text-wine-900">Vicky's Hairplace</strong>.
+                Welcome to <strong className="text-wine-900">Lanivick Confectionary</strong>. Founded by Danladi Victoria Lanishe, our bakery is driven by a deep passion for culinary excellence, premium butter formulations, and authentic natural goodness. From celebratory cakes that steal the spotlight to warm, flaky pastries for morning coffee breaks, every creation is crafted with love.
               </p>
 
-              {/* The 8 Official Cake Flavours from Flyer 4 */}
+              {/* The 8 Official Cake Flavours from Business Plan */}
               <div className="mt-6 p-5 rounded-2xl bg-cream-100/80 border border-gold-400/30">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-wine-900 block mb-2.5 flex items-center gap-1.5">
                   <Cake className="w-4 h-4 text-wine-900" />
-                  <span>8 Authentic Signature Flavours Handcrafted by CEO Lanishe:</span>
+                  <span>8 Signature Cake Flavours Handcrafted by Victoria Lanishe:</span>
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {[
@@ -272,25 +281,25 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* Confectionery + Hair Highlights Grid */}
+              {/* Confectionery Highlights Grid */}
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-white border border-borderLine shadow-xs">
                   <h4 className="font-serif text-sm font-bold text-wine-900 flex items-center gap-2 mb-2">
                     <span>🎂</span>
-                    <span>Lanivick Confectionary Menu</span>
+                    <span>Bespoke Celebration Cakes</span>
                   </h4>
                   <p className="text-xs text-ink-500 leading-relaxed">
-                    Naked Cakes, Decorated Cakes, Cup Cakes, Foil Pan Cakes, Bento Cakes, Boxes of 6 &amp; 12, Fruit Parfaits &amp; Gourmet Banana Bread.
+                    Custom Decorated Cakes, Naked Cakes, Bento Cakes, Foil Pan Comfort Cakes, Cupcakes (Boxes of 6 &amp; 12), and Grand Wedding Tiers.
                   </p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white border border-borderLine shadow-xs">
                   <h4 className="font-serif text-sm font-bold text-wine-900 flex items-center gap-2 mb-2">
-                    <span>💇🏾‍♀️</span>
-                    <span>Vikky's Hairplace Artistry</span>
+                    <span>🥧</span>
+                    <span>Gourmet Pastries &amp; Snacks</span>
                   </h4>
                   <p className="text-xs text-ink-500 leading-relaxed">
-                    Nut-less Braids, Nutted Braids, Twists, Ganna Weaving, Cornrows, Locs Retwist, Threading, Packing Gel, Making Wigs &amp; Home Service.
+                    Buttery Meat Pies, Seasoned Chicken Pies, Fluffy Glazed Doughnuts, Golden Sausage Rolls, Crunchy Chin-Chin, and Greek Yogurt Berry Parfaits.
                   </p>
                 </div>
               </div>
@@ -301,18 +310,22 @@ export const Home: React.FC = () => {
                   to="/about"
                   className="px-6 py-3 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
                 >
-                  <span>Read Full CEO Story</span>
+                  <span>Our Story &amp; Vision</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 
-                <a
-                  href={`https://facebook.com/search/top?q=${encodeURIComponent(settings.facebookPage || 'Danladi Victoria Lanishe')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() =>
+                    openWhatsApp(
+                      settings.whatsappNumber,
+                      'Hello Victoria! I would like to make an enquiry about Lanivick Confectionary.'
+                    )
+                  }
                   className="px-6 py-3 rounded-2xl bg-white hover:bg-cream-50 text-ink-900 font-bold text-xs border border-borderLine transition-all flex items-center gap-2 shadow-xs"
                 >
-                  <span>Facebook: {settings.facebookPage}</span>
-                </a>
+                  <MessageCircle className="w-4 h-4 text-emerald-600" />
+                  <span>Chat with Victoria</span>
+                </button>
               </div>
             </div>
           </div>
@@ -325,14 +338,13 @@ export const Home: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
               <span className="text-xs font-extrabold uppercase tracking-widest text-wine-900 block mb-1">
-                Order Online
+                Fresh From The Oven
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink-900">
-                Cravings, Handled.
+                Today's Confectionery Menu
               </h2>
               <p className="text-sm text-ink-500 mt-2 max-w-xl">
-                Freshly prepared artisanal treats and meals delivered to your doorstep in Lokoja and
-                Abuja.
+                Freshly prepared artisanal cakes, pastries, and natural drinks delivered across Pyakasa, Airport Road, and greater Abuja.
               </p>
             </div>
 
@@ -342,9 +354,10 @@ export const Home: React.FC = () => {
                 [
                   { id: 'all', label: 'All Items' },
                   { id: 'cakes', label: 'Cakes' },
-                  { id: 'pastries', label: 'Pastries & Snacks' },
-                  { id: 'meals', label: 'Meals' },
-                  { id: 'treats', label: 'Treats' },
+                  { id: 'pastries', label: 'Pastries' },
+                  { id: 'snacks', label: 'Snacks' },
+                  { id: 'drinks', label: 'Natural Drinks' },
+                  { id: 'packages', label: 'Packages' },
                 ] as const
               ).map((cat) => (
                 <button
@@ -374,7 +387,7 @@ export const Home: React.FC = () => {
               to="/order"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-cream-100 hover:bg-wine-900 hover:text-white text-wine-900 font-bold text-sm border border-gold-400/40 transition-all shadow-sm"
             >
-              <span>View Full Menu &amp; Pastry Selection</span>
+              <span>Explore Complete Menu &amp; Place Order</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -395,7 +408,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="absolute -bottom-6 -right-6 bg-white p-5 rounded-2xl shadow-elevated border border-borderLine hidden sm:block max-w-[220px]">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-wine-900 block">
-                  Interactive Builder
+                  Interactive Studio
                 </span>
                 <p className="font-serif text-sm font-bold text-ink-900 mt-1">
                   Choose Flavours, Fillings &amp; Custom Plaque
@@ -411,26 +424,25 @@ export const Home: React.FC = () => {
                 Design Your Dream Cake for That Special Milestone
               </h2>
               <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
-                Whether you envision a romantic 2-tier wedding masterpiece or an intimate Korean
-                bento surprise, customize every inch from sponge flavour to custom gold lettering.
+                Whether you envision a grand multi-tier wedding centrepiece, a luxury fondant milestone cake, or an intimate bento surprise, choose from our 8 authentic sponge flavours, fillings, toppers, and custom plaques.
               </p>
 
               <div className="mt-6 grid grid-cols-2 gap-3 text-xs font-semibold text-ink-800">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Madagascar Vanilla &amp; Red Velvet</span>
+                  <span>Red Velvet, Coconut &amp; Vanilla</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Molded Fondant &amp; Gold Foil</span>
+                  <span>Whipped Buttercream &amp; Fondant</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Personalized Inscription Plaque</span>
+                  <span>Gold Lettering &amp; Custom Plaque</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Reference Photo Upload</span>
+                  <span>Custom Inscription &amp; Candles</span>
                 </div>
               </div>
 
@@ -440,7 +452,7 @@ export const Home: React.FC = () => {
                   className="px-7 py-3.5 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-sm shadow-elevated transition-all flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-gold-400" />
-                  <span>Launch Custom Cake Builder</span>
+                  <span>Open Custom Cake Builder</span>
                 </Link>
               </div>
             </div>
@@ -448,7 +460,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. CATERING SPOTLIGHT */}
+      {/* 5. CORPORATE & CELEBRATION CONFECTIONERY SERVICES SPOTLIGHT */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -456,7 +468,7 @@ export const Home: React.FC = () => {
               <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
                 <img
                   src="https://images.unsplash.com/photo-1555244162-803834f70033?w=800&auto=format&fit=crop&q=80"
-                  alt="Party Catering by Lanivick"
+                  alt="Corporate and Event Confectionery by Lanivick"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -464,75 +476,144 @@ export const Home: React.FC = () => {
 
             <div className="lg:col-span-6 lg:order-1">
               <span className="text-xs font-extrabold uppercase tracking-widest text-wine-900 block mb-1">
-                Event &amp; Feast Catering
+                Corporate &amp; Event Confectionery
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-900 leading-tight">
-                From Firewood Jollof to Continental Platters
+                Office Breakfast Boxes &amp; VIP Small Chops
               </h2>
               <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
-                Planning a wedding in Abuja, corporate summit in Lokoja, or an anniversary dinner?
-                We cater seamlessly for 20 to 800+ guests with buffet warmers, uniform stewards,
-                and unmatched flavour consistency.
+                Hosting a corporate meeting, AGM, wedding cocktail, or birthday party in Abuja? Lanivick prepares packaged snack boxes, finger-food platters, and dessert stations with punctual delivery and high hygiene standards.
               </p>
 
               <div className="mt-6 space-y-2 text-xs font-medium text-ink-800">
-                <div className="p-3 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
-                  <span className="font-bold">Smoky Party Jollof, Fried Rice &amp; Dodo</span>
-                  <span className="text-wine-900 font-bold">Party Favorite</span>
+                <div className="p-3.5 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <Coffee className="w-4 h-4 text-wine-900" />
+                    <span className="font-bold">Executive Office Breakfast Boxes (Pies, Roll &amp; Juice)</span>
+                  </div>
+                  <span className="text-wine-900 font-bold">From ₦4,000 / box</span>
                 </div>
-                <div className="p-3 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
-                  <span className="font-bold">VIP Small Chops Platters (Puff-Puff, Samosa, Spring Roll)</span>
-                  <span className="text-wine-900 font-bold">Cocktail Bites</span>
+                <div className="p-3.5 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <Gift className="w-4 h-4 text-wine-900" />
+                    <span className="font-bold">VIP Small Chops Party Platters (50 – 100+ pieces)</span>
+                  </div>
+                  <span className="text-wine-900 font-bold">From ₦15,000 / tray</span>
                 </div>
-                <div className="p-3 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
-                  <span className="font-bold">Continental Pastas &amp; Fresh Salad Bars</span>
-                  <span className="text-wine-900 font-bold">Corporate</span>
+                <div className="p-3.5 rounded-xl bg-cream-50 border border-borderLine flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <GraduationCap className="w-4 h-4 text-wine-900" />
+                    <span className="font-bold">Baking &amp; Pastry Training Programme</span>
+                  </div>
+                  <span className="text-wine-900 font-bold">Hands-On Practical</span>
                 </div>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => setIsCateringModalOpen(true)}
                   className="px-7 py-3.5 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-sm shadow-elevated transition-all flex items-center gap-2"
                 >
-                  <span>Request Instant Catering Quote</span>
+                  <span>Request Event / Corporate Quote</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+
+                <Link
+                  to="/services"
+                  className="px-6 py-3.5 rounded-2xl bg-cream-100 hover:bg-cream-200 text-ink-900 font-bold text-xs border border-borderLine transition-all"
+                >
+                  View All Services
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. VICKY'S HAIRPLACE SPOTLIGHT */}
+      {/* 6. SIGNATURE PACKAGES HIGHLIGHT */}
       <section className="py-20 bg-radial-gradient border-t border-borderLine">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-extrabold uppercase tracking-widest text-gold-600 block mb-1">
-              Vicky's Hairplace
+              Curated Bundles
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-900">
-              Transforming Your Hair.{' '}
-              <span className="italic font-serif text-wine-900 font-normal">Revealing Your Beauty.</span>
+              Celebration &amp; Snack Packages
             </h2>
             <p className="mt-3 text-sm text-ink-500">
-              Nutted &amp; Nut-less braids, Twisting, Cornrows, Locs, Ganna Weaving, Threading, Packing Gel, Ponytail, Wigs &amp; Dreads Relock with luxury home service across Lokoja &amp; Abuja.
+              Save time with our pre-configured bundles, designed for birthdays, executive meetings, and family gifting.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hairServices.slice(0, 4).map((service) => (
-              <HairServiceCard key={service.id} service={service} />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-3xl bg-white border border-borderLine shadow-sm flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-wine-900 uppercase tracking-wider block mb-1">Office Pack</span>
+                <h3 className="font-serif text-xl font-bold text-ink-900">Corporate Breakfast Box</h3>
+                <p className="text-xs text-ink-500 mt-2 leading-relaxed">
+                  1 Flaky Meat or Chicken Pie, 1 Golden Sausage Roll, and 1 Chilled Fresh Fruit Juice. Ideal for board meetings and team training sessions.
+                </p>
+                <div className="mt-4 text-2xl font-bold text-wine-900">₦4,000 <span className="text-xs font-normal text-ink-500">/ box</span></div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-borderLine">
+                <Link
+                  to="/services"
+                  className="block text-center py-2.5 rounded-xl bg-wine-900 text-white font-bold text-xs hover:bg-wine-800 transition-colors"
+                >
+                  Book Corporate Order
+                </Link>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-white border-2 border-wine-900/30 shadow-md flex flex-col justify-between relative">
+              <div className="absolute -top-3 right-6 px-3 py-1 bg-wine-900 text-gold-300 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                Most Popular
+              </div>
+              <div>
+                <span className="text-xs font-bold text-wine-900 uppercase tracking-wider block mb-1">Event Favorite</span>
+                <h3 className="font-serif text-xl font-bold text-ink-900">VIP Small Chops Platter</h3>
+                <p className="text-xs text-ink-500 mt-2 leading-relaxed">
+                  50-piece gourmet platter: 20 sweet puff-puffs, 10 crispy spring rolls, 10 savory samosas, and 10 peppered gizzards.
+                </p>
+                <div className="mt-4 text-2xl font-bold text-wine-900">₦15,000 <span className="text-xs font-normal text-ink-500">/ tray</span></div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-borderLine">
+                <Link
+                  to="/order?category=snacks"
+                  className="block text-center py-2.5 rounded-xl bg-wine-900 text-white font-bold text-xs hover:bg-wine-800 transition-colors"
+                >
+                  Order Tray Online
+                </Link>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-white border border-borderLine shadow-sm flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-bold text-wine-900 uppercase tracking-wider block mb-1">Celebration Bundle</span>
+                <h3 className="font-serif text-xl font-bold text-ink-900">Birthday Surprise Package</h3>
+                <p className="text-xs text-ink-500 mt-2 leading-relaxed">
+                  1 8-inch Decorated Cake (flavour of choice), 6 Assorted Cupcakes, 2 Natural Fruit Juices, Birthday Candles, and Custom Topper.
+                </p>
+                <div className="mt-4 text-2xl font-bold text-wine-900">₦45,000 <span className="text-xs font-normal text-ink-500">/ bundle</span></div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-borderLine">
+                <Link
+                  to="/order?category=packages"
+                  className="block text-center py-2.5 rounded-xl bg-wine-900 text-white font-bold text-xs hover:bg-wine-800 transition-colors"
+                >
+                  Order Celebration Pack
+                </Link>
+              </div>
+            </div>
           </div>
 
           <div className="mt-12 text-center">
             <Link
-              to="/hair"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-sm shadow-elevated transition-all"
+              to="/services"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-cream-100 hover:bg-wine-900 hover:text-white text-wine-900 font-bold text-sm border border-gold-400/40 transition-all shadow-sm"
             >
-              <Scissors className="w-4 h-4 text-gold-400" />
-              <span>Explore All Hairstyles &amp; Pricing</span>
+              <span>Explore All Celebration Packages &amp; Training</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -543,7 +624,7 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-extrabold uppercase tracking-widest text-wine-900 block mb-1">
-              Loved Across Lokoja &amp; Abuja
+              Testimonials
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink-900">
               Kind Words from Cherished Clients
@@ -595,17 +676,15 @@ export const Home: React.FC = () => {
                 Visual Portfolio
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink-900">
-                Our Living Gallery
+                Our Bakery Creations
               </h2>
             </div>
 
             <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0">
               {(
                 [
-                  { id: 'all', label: 'All' },
+                  { id: 'all', label: 'All Items' },
                   { id: 'cakes', label: 'Cakes' },
-                  { id: 'hair', label: 'Hairstyling' },
-                  { id: 'catering', label: 'Catering' },
                   { id: 'pastries', label: 'Pastries' },
                 ] as const
               ).map((f) => (
@@ -649,20 +728,85 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* 8.5. GET THE MOBILE APP SECTION */}
+      <section className="py-16 sm:py-20 bg-gradient-to-br from-cream-100 via-[#fff8f2] to-cream-50 border-t border-borderLine relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-wine-950 via-wine-900 to-wine-950 rounded-3xl p-8 sm:p-14 text-white shadow-luxury border-2 border-gold-400/30 relative overflow-hidden">
+            {/* Background Decorative Rings */}
+            <div className="absolute -top-20 -right-20 w-80 h-80 bg-gold-400/15 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-400 text-ink-950 font-black text-xs uppercase tracking-wider mb-4 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Official Mobile App • Android &amp; iPhone</span>
+                </div>
+
+                <h2 className="font-serif text-3xl sm:text-5xl font-bold leading-tight">
+                  Taste Lanivick in 1 Tap — Install Our Mobile App
+                </h2>
+
+                <p className="mt-3 text-cream-200 text-sm sm:text-base max-w-2xl leading-relaxed">
+                  Install the official Lanivick Confectionary app directly on your smartphone in under 10 seconds. Enjoy lightning-fast re-ordering, live cake tracking, and an instant ₦1,000 welcome discount!
+                </p>
+
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <button
+                    onClick={() => triggerAppInstall()}
+                    className="px-8 py-4 rounded-2xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-500 text-ink-950 font-black text-sm sm:text-base shadow-luxury flex items-center gap-2.5 transition-transform transform hover:scale-105 active:scale-95 cursor-pointer"
+                  >
+                    <Download className="w-5 h-5 stroke-[2.5]" />
+                    <span>Download / Install App Now</span>
+                  </button>
+
+                  <Link
+                    to="/mobile-app"
+                    className="px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition-colors flex items-center gap-2"
+                  >
+                    <span>View Launch &amp; Setup Guide</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="lg:col-span-4 flex justify-center">
+                <div className="p-4 rounded-3xl bg-white/10 backdrop-blur-md border border-gold-400/40 text-center max-w-[280px]">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 p-1 mx-auto mb-3 shadow-lg">
+                    <img
+                      src="/icons/icon-192x192.png"
+                      alt="Lanivick Mobile App Icon"
+                      className="w-full h-full object-cover rounded-[14px]"
+                    />
+                  </div>
+                  <h4 className="font-serif font-bold text-white text-base">
+                    Lanivick Confectionary
+                  </h4>
+                  <p className="text-[11px] text-cream-200 mt-1">
+                    No 100MB download. Runs offline and opens instantly on your phone.
+                  </p>
+                  <div className="mt-3 py-1.5 px-3 rounded-xl bg-gold-400/20 text-gold-300 font-extrabold text-xs">
+                    ₦1,000 Off Code: LANIVICKAPP
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 9. STRATEGIC WHATSAPP & CALL CTA */}
       <section className="py-20 bg-wine-900 text-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8">
               <span className="text-xs font-bold uppercase tracking-widest text-gold-400 block mb-2">
-                We're Here For You
+                Fresh From Pyakasa, Abuja
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl font-bold leading-tight">
-                Ready to Taste Something Delicious or Transform Your Look?
+                Ready to Taste Something Truly Delicious?
               </h2>
               <p className="mt-4 text-cream-200 text-sm sm:text-base max-w-2xl leading-relaxed">
-                Our kitchen stoves are lit and Vicky's salon chair is ready. Reach out directly on
-                WhatsApp for quick bookings, custom orders, or questions.
+                Our ovens are warm and our bakers are ready. Reach out directly on WhatsApp for custom cake design, bulk corporate snack orders, or fast delivery along Airport Road and across Abuja.
               </p>
             </div>
 
@@ -671,7 +815,7 @@ export const Home: React.FC = () => {
                 onClick={() =>
                   openWhatsApp(
                     settings.whatsappNumber,
-                    'Hello Lanivick! I would like to make an inquiry.'
+                    'Hello Victoria! I would like to place an order with Lanivick Confectionary.'
                   )
                 }
                 className="py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-elevated transition-all flex items-center justify-center gap-2.5 active:scale-98"
@@ -692,7 +836,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Catering Modal */}
+      {/* Confectionery Event Quote Modal */}
       {isCateringModalOpen && (
         <CateringQuoteModal onClose={() => setIsCateringModalOpen(false)} />
       )}

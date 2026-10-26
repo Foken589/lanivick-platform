@@ -2,24 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   ShoppingBag,
-  Scissors,
   MapPin,
   Heart,
   User,
   Clock,
   CheckCircle2,
   AlertCircle,
-  Truck,
   Printer,
   MessageCircle,
-  ChevronRight,
   Sparkles,
-  Edit2,
+  Cake,
   Save,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { dataService } from '../services/dataService';
-import { Order, HairBooking, OrderStatus } from '../types';
+import { Order, OrderStatus, CateringRequest } from '../types';
 import {
   formatNaira,
   openWhatsApp,
@@ -42,12 +39,12 @@ export const CustomerDashboard: React.FC = () => {
   const navigate = useNavigate();
   const settings = dataService.getSettings();
 
-  const [activeTab, setActiveTab] = useState<'orders' | 'hair' | 'favorites' | 'profile'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'catering' | 'favorites' | 'profile'>('orders');
   const [selectedOrderForInvoice, setSelectedOrderForInvoice] = useState<Order | null>(null);
 
-  // Reactive Orders & Bookings
+  // Reactive Orders & Catering Requests
   const [orders, setOrders] = useState<Order[]>([]);
-  const [bookings, setBookings] = useState<HairBooking[]>([]);
+  const [cateringRequests, setCateringRequests] = useState<CateringRequest[]>([]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -57,7 +54,6 @@ export const CustomerDashboard: React.FC = () => {
 
     const refreshData = () => {
       const allOrders = dataService.getOrders();
-      // Filter orders by email or phone or show recent if demo
       const userOrders = allOrders.filter(
         (o) =>
           o.userId === currentUser.id ||
@@ -66,23 +62,23 @@ export const CustomerDashboard: React.FC = () => {
       );
       setOrders(userOrders);
 
-      const allBookings = dataService.getHairBookings();
-      const userBookings = allBookings.filter(
-        (b) =>
-          b.userId === currentUser.id ||
-          b.customerEmail.toLowerCase() === currentUser.email.toLowerCase() ||
+      const allCatering = dataService.getCateringRequests();
+      const userCatering = allCatering.filter(
+        (c) =>
+          c.userId === currentUser.id ||
+          c.customerEmail.toLowerCase() === currentUser.email.toLowerCase() ||
           currentUser.email === 'chioma@lanivick.ng'
       );
-      setBookings(userBookings);
+      setCateringRequests(userCatering);
     };
 
     refreshData();
 
     window.addEventListener('lanivick_update_orders', refreshData);
-    window.addEventListener('lanivick_update_hair_bookings', refreshData);
+    window.addEventListener('lanivick_update_catering_requests', refreshData);
     return () => {
       window.removeEventListener('lanivick_update_orders', refreshData);
-      window.removeEventListener('lanivick_update_hair_bookings', refreshData);
+      window.removeEventListener('lanivick_update_catering_requests', refreshData);
     };
   }, [currentUser, navigate]);
 
@@ -92,8 +88,8 @@ export const CustomerDashboard: React.FC = () => {
   const [editAddress, setEditAddress] = useState(
     currentUser?.savedAddresses?.[0]?.streetAddress || ''
   );
-  const [editCity, setEditCity] = useState<'Lokoja' | 'Abuja'>(
-    currentUser?.savedAddresses?.[0]?.city || 'Lokoja'
+  const [editCity, setEditCity] = useState<'Abuja' | 'Pyakasa'>(
+    (currentUser?.savedAddresses?.[0]?.city as 'Abuja' | 'Pyakasa') || 'Abuja'
   );
 
   if (!currentUser) return null;
@@ -160,10 +156,10 @@ export const CustomerDashboard: React.FC = () => {
             <div className="h-8 w-px bg-borderLine" />
             <div className="px-3">
               <span className="font-serif text-2xl font-extrabold text-gold-600 block">
-                {bookings.length}
+                {cateringRequests.length}
               </span>
               <span className="text-[10px] text-ink-500 font-bold uppercase tracking-wider">
-                Hair Bookings
+                Event Quotes
               </span>
             </div>
             <div className="h-8 w-px bg-borderLine" />
@@ -172,7 +168,7 @@ export const CustomerDashboard: React.FC = () => {
                 {currentUser.favorites?.length || 0}
               </span>
               <span className="text-[10px] text-ink-500 font-bold uppercase tracking-wider">
-                Saved Favorites
+                Saved Treats
               </span>
             </div>
           </div>
@@ -193,15 +189,15 @@ export const CustomerDashboard: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setActiveTab('hair')}
+            onClick={() => setActiveTab('catering')}
             className={`px-5 py-3 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 ${
-              activeTab === 'hair'
+              activeTab === 'catering'
                 ? 'bg-wine-900 text-white shadow-sm'
                 : 'text-ink-800 hover:bg-cream-50'
             }`}
           >
-            <Scissors className="w-4 h-4" />
-            <span>Hair Appointments ({bookings.length})</span>
+            <Sparkles className="w-4 h-4" />
+            <span>Service &amp; Event Quotes ({cateringRequests.length})</span>
           </button>
 
           <button
@@ -225,7 +221,7 @@ export const CustomerDashboard: React.FC = () => {
             }`}
           >
             <User className="w-4 h-4" />
-            <span>Profile &amp; Addresses</span>
+            <span>Profile &amp; Delivery Address</span>
           </button>
         </div>
 
@@ -239,13 +235,13 @@ export const CustomerDashboard: React.FC = () => {
                 <ShoppingBag className="w-12 h-12 text-ink-300 mx-auto mb-3" />
                 <h3 className="font-serif text-lg font-bold text-ink-900">No orders placed yet</h3>
                 <p className="text-xs text-ink-500 max-w-xs mx-auto mt-1 mb-4">
-                  Fresh vanilla celebration cakes, meat pies, and party jollof are ready for you.
+                  Fresh vanilla celebration cakes, meat pies, and natural fruit drinks are ready for you.
                 </p>
                 <Link
                   to="/order"
                   className="px-6 py-2.5 rounded-xl bg-wine-900 text-white text-xs font-bold inline-block"
                 >
-                  Explore Menu
+                  Explore Bakery Menu
                 </Link>
               </div>
             ) : (
@@ -309,7 +305,7 @@ export const CustomerDashboard: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Visual 7-Stage Tracker (Unless cancelled) */}
+                    {/* Visual 6-Stage Tracker */}
                     {!isCancelled ? (
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 block mb-3">
@@ -366,7 +362,7 @@ export const CustomerDashboard: React.FC = () => {
                               <span className="text-[11px] text-ink-500 block italic">
                                 {item.cakeCustomization.size} • {item.cakeCustomization.flavour}
                                 {item.cakeCustomization.inscription &&
-                                  ` • "${item.cakeCustomization.inscription}"`}
+                                   ` • "${item.cakeCustomization.inscription}"`}
                               </span>
                             )}
                           </div>
@@ -390,86 +386,81 @@ export const CustomerDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* 2. Hair Bookings Tab */}
-        {activeTab === 'hair' && (
+        {/* 2. Service & Event Quotes Tab */}
+        {activeTab === 'catering' && (
           <div className="space-y-6">
-            {bookings.length === 0 ? (
+            {cateringRequests.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-3xl border border-borderLine p-8">
-                <Scissors className="w-12 h-12 text-ink-300 mx-auto mb-3" />
-                <h3 className="font-serif text-lg font-bold text-ink-900">No hair bookings yet</h3>
+                <Cake className="w-12 h-12 text-ink-300 mx-auto mb-3" />
+                <h3 className="font-serif text-lg font-bold text-ink-900">No service quotes requested yet</h3>
                 <p className="text-xs text-ink-500 max-w-xs mx-auto mt-1 mb-4">
-                  Schedule your knotless braids, locs retwist, or home service with Victoria.
+                  Planning a corporate breakfast, wedding cake, or VIP small chops platter?
                 </p>
                 <Link
-                  to="/hair"
+                  to="/services"
                   className="px-6 py-2.5 rounded-xl bg-wine-900 text-white text-xs font-bold inline-block"
                 >
-                  Book a Hairstyle
+                  Explore Services &amp; Packages
                 </Link>
               </div>
             ) : (
-              bookings.map((booking) => (
+              cateringRequests.map((req) => (
                 <div
-                  key={booking.id}
+                  key={req.id}
                   className="bg-white rounded-3xl p-6 sm:p-8 border border-borderLine shadow-soft flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
                 >
                   <div>
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-sm font-bold text-wine-900">
-                        #{booking.id}
+                        #{req.id}
                       </span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                          booking.status === 'Confirmed'
+                          req.status === 'Confirmed'
                             ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-amber-100 text-amber-800'
+                            : 'bg-wine-100 text-wine-900'
                         }`}
                       >
-                        {booking.status}
+                        {req.status}
                       </span>
                     </div>
 
                     <h3 className="font-serif text-xl font-bold text-ink-900 mt-2">
-                      {booking.serviceName}
+                      {req.eventType} ({req.guestCount} Units / Guests)
                     </h3>
                     <p className="text-xs text-ink-500 mt-1">
-                      Length: {booking.hairLength || 'Standard'} • Size: {booking.hairSize || 'Medium'}
+                      Required Date: <strong>{req.eventDate}</strong> • Location: {req.eventLocation} ({req.city})
                     </p>
 
-                    <div className="mt-3 flex flex-wrap gap-4 text-xs text-ink-800">
-                      <span className="flex items-center gap-1 font-semibold">
-                        <Clock className="w-3.5 h-3.5 text-wine-900" />
-                        {booking.appointmentDate} at {booking.appointmentTime}
-                      </span>
-
-                      <span className="flex items-center gap-1 font-semibold">
-                        <MapPin className="w-3.5 h-3.5 text-wine-900" />
-                        {booking.locationType === 'home_service'
-                          ? `Home Service (${booking.homeAddress})`
-                          : `Studio Visit (${booking.studioCity})`}
-                      </span>
+                    <div className="mt-3 p-3 rounded-xl bg-cream-50 text-xs text-ink-800 space-y-1">
+                      <p>
+                        <strong>Selected Menus:</strong> {req.cuisinePreference.join(', ')}
+                      </p>
+                      {req.specialRequests && (
+                        <p className="italic text-ink-600">Note: "{req.specialRequests}"</p>
+                      )}
                     </div>
                   </div>
 
                   <div className="text-right">
                     <span className="text-[10px] text-ink-500 uppercase font-bold block">
-                      Estimated Cost
+                      Estimated Baseline
                     </span>
                     <span className="font-serif text-xl font-bold text-wine-900 block mb-3">
-                      {formatNaira(booking.estimatedPrice)}
+                      ~{formatNaira(req.estimatedQuote || 0)}
                     </span>
 
                     <button
                       onClick={() =>
                         openWhatsApp(
                           settings.whatsappNumber,
-                          `Hello Vicky! Checking in regarding my hair appointment #${booking.id} for ${booking.serviceName} on ${booking.appointmentDate}.`
+                          `Hello Victoria! Checking in regarding my confectionery inquiry #${req.id} for ${req.eventType} on ${req.eventDate}.`
                         )
                       }
                       className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors flex items-center gap-1.5 shadow-xs"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
-                      <span>Message Vicky</span>
+                      <span>Chat on WhatsApp</span>
                     </button>
                   </div>
                 </div>
@@ -486,13 +477,13 @@ export const CustomerDashboard: React.FC = () => {
                 <Heart className="w-12 h-12 text-ink-300 mx-auto mb-3" />
                 <h3 className="font-serif text-lg font-bold text-ink-900">No favorites saved</h3>
                 <p className="text-xs text-ink-500 max-w-xs mx-auto mt-1 mb-4">
-                  Click the heart icon on any cake, pastry, or meal in the menu to save it here!
+                  Click the heart icon on any cake, pastry, or natural drink to save it here!
                 </p>
                 <Link
                   to="/order"
                   className="px-6 py-2.5 rounded-xl bg-wine-900 text-white text-xs font-bold inline-block"
                 >
-                  Browse Menu
+                  Browse Bakery Menu
                 </Link>
               </div>
             ) : (
@@ -508,7 +499,7 @@ export const CustomerDashboard: React.FC = () => {
         {/* 4. Profile & Addresses Tab */}
         {activeTab === 'profile' && (
           <div className="max-w-2xl bg-white rounded-3xl p-6 sm:p-10 border border-borderLine shadow-soft">
-            <h3 className="font-serif text-2xl font-bold text-ink-900 mb-6">Edit Profile &amp; Addresses</h3>
+            <h3 className="font-serif text-2xl font-bold text-ink-900 mb-6">Edit Profile &amp; Address</h3>
 
             <form onSubmit={handleSaveProfile} className="space-y-4">
               <div>
@@ -535,29 +526,29 @@ export const CustomerDashboard: React.FC = () => {
 
               <div className="pt-4 border-t border-borderLine">
                 <span className="text-xs font-bold uppercase tracking-wider text-wine-900 block mb-3">
-                  Default Delivery Address
+                  Default Delivery Address (Abuja)
                 </span>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
                   <div className="sm:col-span-1">
-                    <label className="block text-xs font-semibold text-ink-800 mb-1">City Hub</label>
+                    <label className="block text-xs font-semibold text-ink-800 mb-1">District / Area</label>
                     <select
                       value={editCity}
-                      onChange={(e) => setEditCity(e.target.value as 'Lokoja' | 'Abuja')}
+                      onChange={(e) => setEditCity(e.target.value as 'Abuja' | 'Pyakasa')}
                       className="w-full p-2.5 rounded-xl border border-borderLine text-xs font-medium focus:border-wine-900 focus:outline-none bg-cream-50/50"
                     >
-                      <option value="Lokoja">Lokoja, Kogi</option>
-                      <option value="Abuja">Abuja, FCT</option>
+                      <option value="Pyakasa">Area G, Pyakasa</option>
+                      <option value="Abuja">Abuja (Airport Rd / City)</option>
                     </select>
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-semibold text-ink-800 mb-1">Street Address</label>
+                    <label className="block text-xs font-semibold text-ink-800 mb-1">Street / House Address</label>
                     <input
                       type="text"
                       value={editAddress}
                       onChange={(e) => setEditAddress(e.target.value)}
-                      placeholder="e.g. No 8 Confluence Boulevard"
+                      placeholder="e.g. Plot 14, Area G, Pyakasa"
                       className="w-full px-3.5 py-2.5 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-cream-50/50"
                     />
                   </div>

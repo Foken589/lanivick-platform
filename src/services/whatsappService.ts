@@ -1,4 +1,4 @@
-import { Order, HairBooking, CateringRequest } from '../types';
+import { Order, CateringRequest } from '../types';
 
 export const formatNaira = (amount: number): string => {
   return '₦' + amount.toLocaleString('en-NG');
@@ -35,9 +35,7 @@ export const formatOrderWhatsAppMessage = (order: Order): string => {
       ? `🚚 *Delivery Address:*\n${order.deliveryAddress.streetAddress}, ${order.deliveryAddress.city}${
           order.deliveryAddress.landmark ? ` (Landmark: ${order.deliveryAddress.landmark})` : ''
         }`
-      : `🏪 *Pickup Location:* ${
-          order.fulfillmentType === 'pickup-lokoja' ? 'Lokoja Studio / Hub' : 'Abuja Hub'
-        }`;
+      : `🏪 *Pickup Location:* Area G, Pyakasa Hub, Abuja`;
 
   return `✨ *NEW ORDER — LANIVICK CONFECTIONARY* ✨
 ------------------------------------------
@@ -57,49 +55,38 @@ ${itemsText}
 ${fulfillmentInfo}
 ${order.notes ? `\n📝 *Customer Notes:* ${order.notes}` : ''}
 
-_Please confirm availability and dispatch window._`;
+_Please confirm order acceptance and dispatch schedule._`;
 };
 
-// 2. Hair Booking WhatsApp Message
-export const formatHairBookingWhatsAppMessage = (booking: HairBooking): string => {
-  const locationText =
-    booking.locationType === 'home_service'
-      ? `🏡 *Home Service:* ${booking.homeAddress} (${booking.studioCity})`
-      : `💇‍♀️ *Salon Appointment:* Vicky's Hairplace Studio (${booking.studioCity})`;
-
-  return `✨ *HAIR APPOINTMENT BOOKING — VICKY'S HAIRPLACE* ✨
-------------------------------------------
-🔖 *Booking ID:* #${booking.id}
-👤 *Client:* ${booking.customerName}
-📞 *Phone:* ${booking.customerPhone}
-💆‍♀️ *Service:* *${booking.serviceName}*
-📏 *Length:* ${booking.hairLength || 'Standard'}
-📐 *Size:* ${booking.hairSize || 'Medium'}
-📅 *Date & Time:* ${booking.appointmentDate} at ${booking.appointmentTime}
-📍 ${locationText}
-💵 *Estimated Cost:* ${formatNaira(booking.estimatedPrice)}
-------------------------------------------
-${booking.specialNotes ? `📝 *Notes/Hair Prep:* ${booking.specialNotes}\n` : ''}
-_Kindly confirm my appointment slot. Thank you!_`;
-};
-
-// 3. Catering Request WhatsApp Message
+// 2. Catering & Event Confectionery Request WhatsApp Message
 export const formatCateringWhatsAppMessage = (request: CateringRequest): string => {
-  return `✨ *EVENT CATERING INQUIRY — LANIVICK CATERING* ✨
+  return `✨ *EVENT & CORPORATE CONFECTIONERY INQUIRY — LANIVICK* ✨
 ------------------------------------------
 📋 *Request ID:* #${request.id}
 👤 *Organizer:* ${request.customerName}
 📞 *Phone:* ${request.customerPhone}
-🎉 *Event Type:* ${request.eventType}
-📅 *Date:* ${request.eventDate}
-👥 *Guest Count:* ${request.guestCount} Guests
+🎉 *Event / Service:* ${request.eventType}
+📅 *Event Date:* ${request.eventDate}
+👥 *Expected Guests / Packs:* ${request.guestCount}
 📍 *Location:* ${request.eventLocation} (${request.city})
-🍽️ *Cuisines Desired:* ${request.cuisinePreference.join(', ')}
+🍽️ *Desired Menus:* ${request.cuisinePreference.join(', ')}
 💰 *Budget Range:* ${request.budgetRange}
-${request.dietaryRequirements ? `🥗 *Dietary Requirements:* ${request.dietaryRequirements}\n` : ''}
+${request.dietaryRequirements ? `🥗 *Dietary / Packaging:* ${request.dietaryRequirements}\n` : ''}
 ${request.specialRequests ? `📝 *Special Requests:* ${request.specialRequests}\n` : ''}
 ------------------------------------------
-_Please provide a tailored menu proposal and formal quotation._`;
+_Please provide formal pricing and availability confirmation._`;
+};
+
+// 3. Training & Partnership WhatsApp Message
+export const formatTrainingWhatsAppMessage = (name: string, phone: string, program: string, message: string): string => {
+  return `🎓 *BAKING & PASTRY TRAINING ENQUIRY — LANIVICK* 🎓
+------------------------------------------
+👤 *Applicant:* ${name}
+📞 *Phone:* ${phone}
+📚 *Program:* ${program}
+📝 *Questions / Goals:* ${message}
+------------------------------------------
+_Kindly share the training syllabus, schedule, and registration details._`;
 };
 
 // 4. Admin to Customer WhatsApp update
@@ -108,12 +95,12 @@ export const formatAdminStatusUpdateWhatsAppMessage = (
   customMsg?: string
 ): string => {
   return `Hello ${order.customerName}! ✨
-This is Victoria from *Lanivick Confectionary & Vicky's Hairplace*.
+This is Victoria from *Lanivick Confectionary, Pyakasa, Abuja*.
 
 Regarding your order *#${order.id}*:
 Current Status: *${order.status.toUpperCase()}*
 
-${customMsg ? customMsg : 'We are carefully preparing your items to ensure total perfection.'}
+${customMsg ? customMsg : 'We are freshly preparing your order with premium ingredients.'}
 
-If you have any questions or need immediate delivery coordination, feel free to reply right here!`;
+If you have any questions or need immediate delivery coordination, please reply to this chat!`;
 };

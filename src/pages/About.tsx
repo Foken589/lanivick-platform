@@ -5,11 +5,13 @@ import {
   Heart,
   Award,
   CheckCircle2,
-  Scissors,
   Cake,
   ArrowRight,
   Phone,
   MessageCircle,
+  Coffee,
+  ShieldCheck,
+  MapPin,
 } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { openWhatsApp } from '../services/whatsappService';
@@ -23,62 +25,61 @@ export const About: React.FC = () => {
         {/* Story Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-extrabold uppercase tracking-widest text-wine-900 block mb-1">
-            Our Heritage &amp; Passion
+            Our Heritage &amp; Vision
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink-900 leading-tight">
-            One Visionary Founder. Boundless Craft.
+            Crafted with Passion. Baked for Moments That Matter.
           </h1>
           <p className="mt-4 text-sm sm:text-base text-ink-500 leading-relaxed">
-            Lanivick was born from a simple, unyielding belief: everyday moments and grand milestones
-            deserve unforgettable sweetness and stylish, confidence-crowning beauty.
+            Founded on the principle of <strong className="text-wine-900">“Premium Taste, Healthy Treats and Perfect Craft”</strong>, Lanivick Confectionary elevates everyday indulgences and milestone celebrations across Abuja.
           </p>
         </div>
 
-        {/* Dedicated Meet the CEO Section */}
+        {/* Dedicated Meet the Founder Section */}
         <div className="mb-20 rounded-3xl bg-gradient-to-br from-cream-100 via-white to-cream-100/60 p-8 sm:p-12 border border-gold-400/40 shadow-luxury">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* CEO Photos (Dual Visual) */}
+            {/* Founder Photos */}
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
               <div className="rounded-2xl overflow-hidden shadow-md border-2 border-white aspect-[3/4]">
                 <img
                   src="/images/ceo-lanishe-main.jpg"
-                  alt="Danladi Victoria Lanishe - CEO Lanishe"
+                  alt="Danladi Victoria Lanishe - Founder & Master Baker"
                   className="w-full h-full object-cover object-center"
                 />
               </div>
               <div className="rounded-2xl overflow-hidden shadow-md border-2 border-white aspect-[3/4] mt-6">
                 <img
-                  src="/images/ceo-lanishe-chocolate.jpg"
-                  alt="CEO Victoria Lanishe holding artisan cake"
+                  src="/images/ceo-lanishe-pink.jpg"
+                  alt="Victoria Lanishe with celebration cake"
                   className="w-full h-full object-cover object-center"
                 />
               </div>
             </div>
 
-            {/* CEO Bio & Vision */}
+            {/* Founder Bio & Philosophy */}
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-wine-900 text-gold-300 text-[10px] font-bold uppercase tracking-widest mb-3">
                 <Award className="w-3.5 h-3.5 text-gold-400" />
-                <span>Meet The Founder &amp; Creative Director</span>
+                <span>Founder &amp; Creative Master Baker</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink-900">
                 Danladi Victoria Lanishe
               </h2>
               <span className="text-sm font-bold text-gold-600 block mb-4">
-                CEO Lanishe • Lanivick Confectionary &amp; Vikky's Hairplace
+                Proprietor, Lanivick Confectionary • Area G, Pyakasa, Abuja
               </span>
 
               <p className="font-script text-2xl sm:text-3xl text-wine-900 leading-snug mb-4">
-                "{settings.ceoQuote}"
+                "{settings.ceoQuote || 'Life is what you bake it. We just make it sweeter!'}"
               </p>
 
               <p className="text-sm text-ink-500 leading-relaxed mb-4">
-                Danladi Victoria Lanishe has built Lanivick into a cherished household name across Lokoja, Kogi State and Abuja, FCT. Balancing the meticulous science of pastry culinary arts with the sensitive craft of hair artistry, Victoria brings precision, high hygienic standards, and warmth to every single order.
+                Danladi Victoria Lanishe established Lanivick Confectionary with an uncompromising dedication to artisanal baking. Rooted in culinary precision and wholesome nutrition, Victoria combines time-tested pastry techniques with modern cake artistry.
               </p>
 
               <p className="text-sm text-ink-500 leading-relaxed mb-6">
-                Under her guidance, <strong className="text-wine-900">Lanivick Confectionary</strong> masters 8 signature cake recipes (from coconut and slow-baked banana bread to decadent Belgian chocolate and royal red velvet), while <strong className="text-wine-900">Vikky's Hairplace</strong> lives by the promise: <em className="text-wine-900">"{settings.hairTagline}"</em>.
+                Operating from our dedicated bakery hub in <strong className="text-wine-900">Area G, Pyakasa, off Airport Road, Abuja</strong>, Victoria personally oversees every recipe — from our 8 signature cake sponge formulations to golden flaky meat pies and fresh fruit juices.
               </p>
 
               <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-borderLine">
@@ -86,7 +87,7 @@ export const About: React.FC = () => {
                   onClick={() =>
                     openWhatsApp(
                       settings.whatsappNumber,
-                      'Hello CEO Lanishe! I would like to make an inquiry.'
+                      'Hello Victoria! I would like to make an enquiry about Lanivick Confectionary.'
                     )
                   }
                   className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-2"
@@ -116,93 +117,87 @@ export const About: React.FC = () => {
           </div>
         </div>
 
-        {/* The Dual Craft Split */}
+        {/* Vision & Mission Split */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">
-          {/* Confectionery Column */}
+          {/* Custom Cake Studio Column */}
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-borderLine shadow-soft flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-2xl bg-cream-100 flex items-center justify-center text-2xl mb-6">
                 🎂
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-wine-900 block mb-1">
-                The Bakery &amp; Feast
+                Bespoke Milestone Cakes
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink-900 mb-4">
-                Lanivick Confectionary
+                Bespoke Celebration Studio
               </h2>
               <p className="text-sm text-ink-500 leading-relaxed mb-4">
-                We believe in baking without shortcuts. That means real creamery butter, pure vanilla
-                beans, rich Dutch cocoa, and slow fermentation. From our legendary flaky meat pies
-                and golden egg rolls in Lokoja to custom tiered wedding cakes and smoky party jollof
-                buffets in Abuja.
+                We believe in baking without shortcuts. That means real creamery butter, pure vanilla extract, rich cocoa, and natural fruit essences. From intimate Korean bento surprise boxes to majestic multi-tier wedding centerpieces, our cakes are crafted to captivate eyes and tastebuds alike.
               </p>
               <ul className="space-y-2 text-xs font-medium text-ink-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Zero artificial flavor shortcuts
+                  8 authentic signature cake flavours
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Freshly baked each morning on order
+                  Hand-piped buttercream &amp; bespoke fondant artwork
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Full banquet catering warmers &amp; stewards
+                  Cupcakes (boxes of 6 &amp; 12) &amp; comfort foil pan cakes
                 </li>
               </ul>
             </div>
 
             <div className="mt-8 pt-6 border-t border-borderLine">
               <Link
-                to="/order"
+                to="/cakes"
                 className="inline-flex items-center gap-2 text-xs font-bold text-wine-900 hover:text-wine-700"
               >
-                <span>Browse Bakery &amp; Catering Catalogue</span>
+                <span>Launch Custom Cake Studio</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
 
-          {/* Hairstyling Column */}
+          {/* Pastries, Drinks & Corporate Packs Column */}
           <div className="bg-white rounded-3xl p-8 sm:p-10 border border-borderLine shadow-soft flex flex-col justify-between">
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-wine-100 text-wine-900 flex items-center justify-center text-2xl mb-6">
-                💇🏾‍♀️
+              <div className="w-12 h-12 rounded-2xl bg-cream-100 flex items-center justify-center text-2xl mb-6">
+                🥧
               </div>
               <span className="text-xs font-bold uppercase tracking-wider text-gold-600 block mb-1">
-                Salon &amp; Home Service
+                Gourmet Pastries &amp; Corporate Packs
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink-900 mb-4">
-                Vicky's Hairplace
+                Daily Pastries &amp; Event Boxes
               </h2>
               <p className="text-sm text-ink-500 leading-relaxed mb-4">
-                Led by Victoria's artistry and precision, Vicky's Hairplace celebrates African
-                beauty through neat, gentle, tension-free styling. Whether you are rocking
-                waist-length knotless braids, rejuvenating mature locs, or revamping a closure wig,
-                we treat every client's scalp with gentle TLC.
+                Our kitchen produces Abuja's flakiest meat and chicken pies, fluffy glazed doughnuts, golden sausage rolls, and crunchy jarred chin-chin. For businesses and event hosts, we offer individual Office Breakfast Boxes and VIP Small Chops platters.
               </p>
               <ul className="space-y-2 text-xs font-medium text-ink-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Edge-protecting, painless knotless technique
+                  Freshly baked daily with premium butter crust
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Dread relock, detoxing &amp; interlocking
+                  100% natural fruit juices &amp; Greek yogurt berry parfaits
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Doorstep luxury home service appointments
+                  VIP small chops platters &amp; corporate breakfast supply
                 </li>
               </ul>
             </div>
 
             <div className="mt-8 pt-6 border-t border-borderLine">
               <Link
-                to="/hair"
+                to="/services"
                 className="inline-flex items-center gap-2 text-xs font-bold text-wine-900 hover:text-wine-700"
               >
-                <span>Explore Hairstyling Services &amp; Book</span>
+                <span>Explore Services &amp; Packages</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -215,31 +210,34 @@ export const About: React.FC = () => {
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ink-900">
               The Four Lanivick Pillars
             </h3>
+            <p className="text-xs text-ink-500 mt-1">
+              Our commitment to excellence in every treat we bake
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             <div className="p-5 rounded-2xl bg-white border border-borderLine">
               <span className="font-serif text-2xl font-bold text-gold-600 block mb-1">01</span>
-              <h4 className="font-bold text-sm text-ink-900 mb-1">Freshness First</h4>
-              <p className="text-xs text-ink-500">Every pastry, cake, and meal is prepared hot.</p>
+              <h4 className="font-bold text-sm text-ink-900 mb-1">Premium Taste</h4>
+              <p className="text-xs text-ink-500">Real butter, rich cocoa, and zero artificial shortcuts.</p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white border border-borderLine">
               <span className="font-serif text-2xl font-bold text-gold-600 block mb-1">02</span>
-              <h4 className="font-bold text-sm text-ink-900 mb-1">Painless Artistry</h4>
-              <p className="text-xs text-ink-500">Zero tension on client hairlines, guaranteed.</p>
+              <h4 className="font-bold text-sm text-ink-900 mb-1">Healthy Treats</h4>
+              <p className="text-xs text-ink-500">Natural fruit juices, greek yogurt parfaits, and balanced sweetness.</p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white border border-borderLine">
               <span className="font-serif text-2xl font-bold text-gold-600 block mb-1">03</span>
-              <h4 className="font-bold text-sm text-ink-900 mb-1">Lokoja &amp; Abuja Reach</h4>
-              <p className="text-xs text-ink-500">Reliable local delivery hubs in both cities.</p>
+              <h4 className="font-bold text-sm text-ink-900 mb-1">Perfect Craft</h4>
+              <p className="text-xs text-ink-500">Meticulous pastry folding, delicate cake piping, and flawless finish.</p>
             </div>
 
             <div className="p-5 rounded-2xl bg-white border border-borderLine">
               <span className="font-serif text-2xl font-bold text-gold-600 block mb-1">04</span>
-              <h4 className="font-bold text-sm text-ink-900 mb-1">Warm Hospitality</h4>
-              <p className="text-xs text-ink-500">Prompt communication on WhatsApp &amp; phone.</p>
+              <h4 className="font-bold text-sm text-ink-900 mb-1">Abuja Delivery</h4>
+              <p className="text-xs text-ink-500">Punctual dispatch across Pyakasa, Airport Road, and FCT districts.</p>
             </div>
           </div>
         </div>

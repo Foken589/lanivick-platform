@@ -1,4 +1,4 @@
-export type ProductCategory = 'cakes' | 'pastries' | 'meals' | 'treats';
+export type ProductCategory = 'cakes' | 'pastries' | 'snacks' | 'drinks' | 'packages';
 
 export interface ProductVariant {
   id: string;
@@ -51,10 +51,10 @@ export interface CartItem {
 export interface DeliveryAddress {
   fullName: string;
   phone: string;
-  city: 'Lokoja' | 'Abuja';
+  city: string; // e.g. Abuja (Pyakasa, Airport Road, Gwarinpa, Central, etc.)
   streetAddress: string;
   landmark?: string;
-  fulfillmentType: 'delivery' | 'pickup-lokoja' | 'pickup-abuja';
+  fulfillmentType: 'delivery' | 'pickup-pyakasa';
 }
 
 export type OrderStatus =
@@ -80,7 +80,7 @@ export interface Order {
   subtotal: number;
   deliveryFee: number;
   total: number;
-  fulfillmentType: 'delivery' | 'pickup-lokoja' | 'pickup-abuja';
+  fulfillmentType: 'delivery' | 'pickup-pyakasa';
   deliveryAddress?: DeliveryAddress;
   preferredDate: string;
   preferredTime: string;
@@ -93,52 +93,14 @@ export interface Order {
   updatedAt: string;
 }
 
-export type HairCategory = 'braids' | 'twists' | 'locs' | 'weaving' | 'wigs' | 'natural';
-
-export interface HairService {
-  id: string;
-  name: string;
-  description: string;
-  category: HairCategory;
-  startingPrice: number;
-  duration: string;
-  image: string;
-  lengthsAvailable: string[];
-  sizesAvailable: string[];
-  homeServiceEligible: boolean;
-  popular?: boolean;
-}
-
-export type BookingStatus = 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
-
-export interface HairBooking {
-  id: string;
-  userId?: string;
-  serviceId: string;
-  serviceName: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  appointmentDate: string;
-  appointmentTime: string;
-  locationType: 'salon' | 'home_service';
-  studioCity: 'Lokoja' | 'Abuja';
-  homeAddress?: string;
-  hairLength?: string;
-  hairSize?: string;
-  referenceImageUrl?: string;
-  specialNotes?: string;
-  estimatedPrice: number;
-  status: BookingStatus;
-  createdAt: string;
-}
-
 export type CateringEventType =
   | 'Wedding'
   | 'Birthday Party'
   | 'Corporate Event'
-  | 'Private Dinner'
-  | 'Funeral Banquet'
+  | 'Office Breakfast'
+  | 'School Event'
+  | 'Church Function'
+  | 'Anniversary'
   | 'Graduation'
   | 'Other';
 
@@ -153,9 +115,9 @@ export interface CateringRequest {
   eventType: CateringEventType;
   eventDate: string;
   eventLocation: string;
-  city: 'Lokoja' | 'Abuja' | 'Other';
+  city: string;
   guestCount: number;
-  cuisinePreference: string[];
+  cuisinePreference: string[]; // e.g. Custom Celebration Cake, VIP Small Chops, Office Breakfast Boxes
   budgetRange: string;
   dietaryRequirements?: string;
   specialRequests?: string;
@@ -164,12 +126,37 @@ export interface CateringRequest {
   createdAt: string;
 }
 
+export interface TrainingEnquiry {
+  id: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  interestArea: 'Baking Fundamentals' | 'Pastries & Meat Pies' | 'Cake Decoration' | 'Complete Masterclass';
+  preferredSchedule: 'Weekday Morning' | 'Weekend Intensive' | 'Flexible';
+  experienceLevel: 'Beginner' | 'Intermediate';
+  notes?: string;
+  createdAt: string;
+}
+
+export interface PartnershipEnquiry {
+  id: string;
+  organizationName: string;
+  contactPerson: string;
+  phone: string;
+  email: string;
+  organizationType: 'Event Planner' | 'School' | 'Office / Corporate' | 'Church' | 'Hotel' | 'Government Agency' | 'Other';
+  collaborationType: 'Regular Snack Supply' | 'Event Catering Partnership' | 'Corporate Gift Boxes' | 'Wholesale / Bulk Orders';
+  estimatedFrequency?: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface Review {
   id: string;
   author: string;
   role: string;
-  city: 'Lokoja' | 'Abuja';
-  category: 'Cakes' | 'Pastries' | 'Hair' | 'Catering';
+  city: string;
+  category: 'Cakes' | 'Pastries' | 'Snacks' | 'Events';
   rating: number;
   text: string;
   date: string;
@@ -180,28 +167,36 @@ export interface Review {
 export interface GalleryItem {
   id: string;
   title: string;
-  category: 'cakes' | 'pastries' | 'hair' | 'catering';
+  category: 'cakes' | 'pastries' | 'snacks' | 'events';
   image: string;
   caption: string;
 }
 
 export interface StoreSettings {
+  businessName: string;
+  slogan: string;
+  tagline?: string;
   whatsappNumber: string;
   callPhone: string;
-  lokojaAddress: string;
-  abujaAddress: string;
+  email: string;
+  address: string; // Area G, Pyakasa, off Airport Road, Abuja, FCT
+  abujaAddress?: string;
   bankName: string;
   accountNumber: string;
   accountName: string;
   announcement: string;
-  deliveryFeeLokoja: number;
+  deliveryFeePyakasa?: number;
+  deliveryFeeLokoja?: number;
   deliveryFeeAbuja: number;
-  homeServiceHairSurcharge: number;
+  deliveryCoverage: string;
+  openingHours: string;
   ceoName?: string;
   ceoTitle?: string;
   ceoQuote?: string;
-  hairTagline?: string;
   facebookPage?: string;
+  instagramPage?: string;
+  tiktokPage?: string;
+  adminPassword?: string;
 }
 
 export interface UserProfile {
@@ -210,6 +205,7 @@ export interface UserProfile {
   email: string;
   phone: string;
   role: 'customer' | 'admin';
+  title?: string;
   savedAddresses: DeliveryAddress[];
   favorites: string[];
   createdAt: string;

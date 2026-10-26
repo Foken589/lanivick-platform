@@ -1,0 +1,54 @@
+{
+  "name": "Lanivick Confectionary",
+  "short_name": "Lanivick",
+  "description": "Premium Taste, Healthy Treats and Perfect Craft — Handcrafted celebration cakes, flaky meat pies, gourmet pastries, and natural drinks in Area G, Pyakasa, Abuja.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFF7F0",
+  "theme_color": "#7A1234",
+  "lang": "en-NG",
+  "dir": "ltr",
+  "categories": ["food", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Order Cakes & Pastries",
+      "short_name": "Order",
+      "url": "/order",
+      "description": "Browse and order fresh pastries and celebration cakes"
+    },
+    {
+      "name": "Bespoke Cake Studio",
+      "short_name": "Custom Cake",
+      "url": "/cakes",
+      "description": "Build and customize your celebration cake"
+    },
+    {
+      "name": "Event Catering & Platters",
+      "short_name": "Catering",
+      "url": "/services",
+      "description": "Order corporate breakfast boxes and small chops trays"
+    }
+  ]
+}

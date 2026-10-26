@@ -16,9 +16,9 @@ export default {
           500: '#d04369',
           600: '#b82b51',
           700: '#9b1e41',
-          800: '#811c38',
-          900: '#6d1530', // Brand Primary Wine
-          950: '#3e0717',
+          800: '#871439',
+          900: '#7A1234', // Official Burgundy / Deep Wine
+          950: '#4a081d',
         },
         gold: {
           50: '#fcf9ee',
@@ -33,8 +33,8 @@ export default {
           900: '#603b1e',
         },
         cream: {
-          50: '#fffdfa',
-          100: '#fff8ed', // Brand Cream
+          50: '#fffbf7',
+          100: '#FFF7F0', // Official Cream / Ivory
           200: '#fdf0db',
           300: '#fae3c1',
           400: '#f4ce9d',
@@ -53,7 +53,7 @@ export default {
           200: '#fbcfe0',
           300: '#f8a8c5',
           400: '#f273a0',
-          500: '#e8336d', // Sweet Strawberry Pink from Flyer
+          500: '#e8336d', // Strawberry Pink Accent
           600: '#d81b60',
           700: '#b8104c',
           800: '#991141',
@@ -61,7 +61,7 @@ export default {
         },
         chocolate: {
           800: '#4a1c27',
-          900: '#38161f', // Deep Cocoa Flyer Base
+          900: '#38161f', // Deep Cocoa Base
           950: '#240d14',
         },
         borderLine: '#eadfd5',
@@ -72,7 +72,7 @@ export default {
         sans: ['"Plus Jakarta Sans"', '"DM Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'luxury': '0 20px 50px -10px rgba(109, 21, 48, 0.12), 0 10px 20px -5px rgba(216, 168, 62, 0.08)',
+        'luxury': '0 20px 50px -10px rgba(122, 18, 52, 0.12), 0 10px 20px -5px rgba(216, 168, 62, 0.08)',
         'soft': '0 4px 20px -2px rgba(36, 28, 32, 0.06)',
         'elevated': '0 12px 36px -4px rgba(36, 28, 32, 0.12)',
       },

@@ -1,5 +1,6 @@
 -- ====================================================================
--- LANIVICK CONFECTIONARY & VICKY'S HAIRPLACE — PRODUCTION DATABASE SCHEMA
+-- LANIVICK CONFECTIONARY — PRODUCTION DATABASE SCHEMA
+-- Location: Area G, Pyakasa, off Airport Road, Abuja, FCT
 -- PostgreSQL / Supabase Migration
 -- ====================================================================
 
@@ -19,8 +20,6 @@ CREATE TYPE order_status AS ENUM (
 );
 CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'refunded', 'pay_on_delivery');
 CREATE TYPE payment_method AS ENUM ('paystack', 'flutterwave', 'bank_transfer', 'delivery');
-CREATE TYPE hair_location_type AS ENUM ('salon', 'home_service');
-CREATE TYPE booking_status AS ENUM ('Pending', 'Confirmed', 'Completed', 'Cancelled');
 CREATE TYPE catering_status AS ENUM ('New', 'Reviewing', 'Quoted', 'Confirmed', 'Completed');
 
 -- 2. USERS & PROFILES
@@ -41,7 +40,7 @@ CREATE TABLE IF NOT EXISTS saved_addresses (
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   recipient_name TEXT NOT NULL,
   phone TEXT NOT NULL,
-  city TEXT NOT NULL CHECK (city IN ('Lokoja', 'Abuja')),
+  city TEXT NOT NULL DEFAULT 'Abuja',
   street_address TEXT NOT NULL,
   landmark TEXT,
   is_default BOOLEAN DEFAULT FALSE,
@@ -96,8 +95,8 @@ CREATE TABLE IF NOT EXISTS orders (
   subtotal NUMERIC(12, 2) NOT NULL CHECK (subtotal >= 0),
   delivery_fee NUMERIC(12, 2) NOT NULL DEFAULT 0,
   total NUMERIC(12, 2) NOT NULL CHECK (total >= 0),
-  fulfillment_type TEXT NOT NULL CHECK (fulfillment_type IN ('delivery', 'pickup-lokoja', 'pickup-abuja')),
-  city TEXT CHECK (city IN ('Lokoja', 'Abuja')),
+  fulfillment_type TEXT NOT NULL CHECK (fulfillment_type IN ('delivery', 'pickup-pyakasa')),
+  city TEXT DEFAULT 'Abuja',
   street_address TEXT,
   landmark TEXT,
   preferred_date DATE NOT NULL,
@@ -145,46 +144,7 @@ CREATE TABLE IF NOT EXISTS payments (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. HAIR SERVICES & BOOKINGS
-CREATE TABLE IF NOT EXISTS hair_services (
-  id TEXT PRIMARY KEY,
-  name TEXT NOT NULL,
-  description TEXT NOT NULL,
-  category TEXT NOT NULL, -- braids, twists, locs, weaving, wigs, natural
-  starting_price NUMERIC(12, 2) NOT NULL CHECK (starting_price >= 0),
-  duration TEXT NOT NULL,
-  image TEXT NOT NULL,
-  lengths_available TEXT[],
-  sizes_available TEXT[],
-  home_service_eligible BOOLEAN DEFAULT TRUE,
-  popular BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS hair_bookings (
-  id TEXT PRIMARY KEY, -- e.g. HB-5491
-  user_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
-  service_id TEXT REFERENCES hair_services(id) ON DELETE SET NULL,
-  service_name TEXT NOT NULL,
-  customer_name TEXT NOT NULL,
-  customer_email TEXT NOT NULL,
-  customer_phone TEXT NOT NULL,
-  appointment_date DATE NOT NULL,
-  appointment_time TEXT NOT NULL,
-  location_type hair_location_type NOT NULL DEFAULT 'salon',
-  studio_city TEXT NOT NULL CHECK (studio_city IN ('Lokoja', 'Abuja')),
-  home_address TEXT,
-  hair_length TEXT,
-  hair_size TEXT,
-  reference_image_url TEXT,
-  special_notes TEXT,
-  estimated_price NUMERIC(12, 2) NOT NULL,
-  status booking_status NOT NULL DEFAULT 'Pending',
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 8. CATERING REQUESTS
+-- 7. CATERING & EVENT REQUESTS
 CREATE TABLE IF NOT EXISTS catering_requests (
   id TEXT PRIMARY KEY, -- e.g. CAT-3180
   user_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
@@ -194,7 +154,7 @@ CREATE TABLE IF NOT EXISTS catering_requests (
   event_type TEXT NOT NULL,
   event_date DATE NOT NULL,
   event_location TEXT NOT NULL,
-  city TEXT NOT NULL,
+  city TEXT NOT NULL DEFAULT 'Abuja',
   guest_count INT NOT NULL CHECK (guest_count >= 1),
   cuisine_preferences TEXT[] NOT NULL,
   budget_range TEXT NOT NULL,
@@ -206,13 +166,42 @@ CREATE TABLE IF NOT EXISTS catering_requests (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 9. REVIEWS & TESTIMONIALS
+-- 8. BAKING & PASTRY TRAINING ENQUIRIES
+CREATE TABLE IF NOT EXISTS training_enquiries (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  full_name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT NOT NULL,
+  interest_area TEXT NOT NULL,
+  preferred_schedule TEXT NOT NULL,
+  experience_level TEXT NOT NULL,
+  notes TEXT,
+  status TEXT DEFAULT 'New',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 9. CORPORATE & INSTITUTIONAL PARTNERSHIPS
+CREATE TABLE IF NOT EXISTS partnership_enquiries (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  organization_name TEXT NOT NULL,
+  contact_person TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT NOT NULL,
+  organization_type TEXT NOT NULL,
+  collaboration_type TEXT NOT NULL,
+  estimated_frequency TEXT,
+  message TEXT NOT NULL,
+  status TEXT DEFAULT 'New',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 10. REVIEWS & TESTIMONIALS
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   author TEXT NOT NULL,
   role TEXT,
-  city TEXT NOT NULL CHECK (city IN ('Lokoja', 'Abuja')),
-  category TEXT NOT NULL CHECK (category IN ('Cakes', 'Pastries', 'Hair', 'Catering')),
+  city TEXT NOT NULL DEFAULT 'Abuja',
+  category TEXT NOT NULL CHECK (category IN ('Cakes', 'Pastries', 'Snacks', 'Events')),
   rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   text TEXT NOT NULL,
   date TEXT NOT NULL,
@@ -222,18 +211,18 @@ CREATE TABLE IF NOT EXISTS reviews (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 10. GALLERY
+-- 11. GALLERY
 CREATE TABLE IF NOT EXISTS gallery (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
-  category TEXT NOT NULL CHECK (category IN ('cakes', 'pastries', 'hair', 'catering')),
+  category TEXT NOT NULL CHECK (category IN ('cakes', 'pastries', 'snacks', 'events')),
   image_url TEXT NOT NULL,
   caption TEXT,
   display_order INT DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 11. NOTIFICATIONS
+-- 12. NOTIFICATIONS
 CREATE TABLE IF NOT EXISTS notifications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -244,48 +233,49 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 12. STORE SETTINGS
+-- 13. STORE SETTINGS
 CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value JSONB NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 13. INDEXES FOR PERFORMANCE
+-- 14. PERFORMANCE INDEXES
 CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_hair_bookings_date ON hair_bookings(appointment_date);
 CREATE INDEX IF NOT EXISTS idx_catering_date ON catering_requests(event_date);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
 
--- 14. ROW LEVEL SECURITY (RLS) POLICIES
+-- 15. ROW LEVEL SECURITY (RLS) POLICIES
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE hair_bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE catering_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE training_enquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE partnership_enquiries ENABLE ROW LEVEL SECURITY;
 
--- Profiles: users can read and update their own profile; admins can read all
 CREATE POLICY "Users can view own profile" ON profiles
   FOR SELECT USING (auth.uid() = id);
 
 CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
--- Orders: users view their own orders; admins can view/update all
 CREATE POLICY "Users view own orders" ON orders
   FOR SELECT USING (auth.uid() = user_id OR user_id IS NULL);
 
 CREATE POLICY "Anyone can insert an order" ON orders
   FOR INSERT WITH CHECK (true);
 
--- ====================================================================
--- SEED CATEGORIES
--- ====================================================================
-INSERT INTO categories (id, name, description, icon) VALUES
-('cakes', 'Cakes', 'Celebration, birthday & custom tiered cakes', '🎂'),
-('pastries', 'Pastries & Snacks', 'Flaky meat pies, egg rolls, fish rolls and small chops', '🥧'),
-('meals', 'Meals', 'Party jollof, fried rice & continental dishes', '🍲'),
-('treats', 'Treats', 'Parfaits, banana bread and waffles', '🍓')
-ON CONFLICT (id) DO NOTHING;
+-- 16. SEED DATA
+INSERT INTO categories (id, name, description, icon, display_order) VALUES
+('cakes', 'Cakes', 'Celebration, birthday & custom tiered cakes', '🎂', 1),
+('pastries', 'Pastries', 'Flaky beef meat pies, sausage rolls, and egg rolls', '🥧', 2),
+('snacks', 'VIP Chops & Snacks', 'Crispy spring rolls, samosas, peppered wings & puff puff', '🍢', 3),
+('drinks', 'Natural Drinks', 'Fresh zobo infusion, tigernut milk, juices & fruit parfaits', '🥤', 4),
+('packages', 'Packages & Boxes', 'Corporate breakfast boxes, meeting snack packs & party packages', '🎁', 5)
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  description = EXCLUDED.description,
+  icon = EXCLUDED.icon,
+  display_order = EXCLUDED.display_order;

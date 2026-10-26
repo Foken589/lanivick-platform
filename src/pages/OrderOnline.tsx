@@ -57,11 +57,12 @@ export const OrderOnline: React.FC = () => {
   }, [products, selectedCategory, searchQuery, onlyInStock, sortBy]);
 
   const categories = [
-    { id: 'all', label: 'All Delicacies', icon: '✨' },
-    { id: 'cakes', label: 'Cakes', icon: '🎂' },
-    { id: 'pastries', label: 'Pastries & Snacks', icon: '🥧' },
-    { id: 'meals', label: 'Meals', icon: '🍲' },
-    { id: 'treats', label: 'Treats', icon: '🍓' },
+    { id: 'all', label: 'All Confectionery', icon: '✨' },
+    { id: 'cakes', label: 'Cakes & Bento', icon: '🎂' },
+    { id: 'pastries', label: 'Pastries & Pies', icon: '🥧' },
+    { id: 'snacks', label: 'VIP Chops & Snacks', icon: '🍢' },
+    { id: 'drinks', label: 'Drinks & Parfaits', icon: '🥤' },
+    { id: 'packages', label: 'Boxes & Packages', icon: '🎁' },
   ];
 
   return (
@@ -73,11 +74,11 @@ export const OrderOnline: React.FC = () => {
             Lanivick Confectionary Catalogue
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-bold text-ink-900">
-            Order Something Delicious
+            Order Fresh Confectionery
           </h1>
           <p className="mt-3 text-sm text-ink-500">
-            From signature celebration cakes to warm savory meat pies and hearty party jollof.
-            Delivery to Lokoja and Abuja or free hub pickup.
+            From signature celebration cakes to flaky beef pies, VIP small chops, natural juices, and breakfast boxes.
+            Fast doorstep delivery across Abuja or free pickup at Area G, Pyakasa hub.
           </p>
         </div>
 
@@ -91,7 +92,7 @@ export const OrderOnline: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search vanilla cakes, meat pie, parfait, party jollof..."
+                placeholder="Search red velvet cake, meat pie, parfait, small chops, breakfast box..."
                 className="w-full pl-11 pr-4 py-3 rounded-2xl border border-borderLine text-sm focus:border-wine-900 focus:outline-none bg-cream-50/50"
               />
               {searchQuery && (

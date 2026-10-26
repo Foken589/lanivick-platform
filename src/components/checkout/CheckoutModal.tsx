@@ -42,10 +42,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
   const [name, setName] = useState(currentUser?.name || '');
   const [email, setEmail] = useState(currentUser?.email || '');
   const [phone, setPhone] = useState(currentUser?.phone || '');
-  const [city, setCity] = useState<'Lokoja' | 'Abuja'>('Lokoja');
-  const [fulfillmentType, setFulfillmentType] = useState<
-    'delivery' | 'pickup-lokoja' | 'pickup-abuja'
-  >('delivery');
+  const [cityArea, setCityArea] = useState('Pyakasa / Airport Road');
+  const [fulfillmentType, setFulfillmentType] = useState<'delivery' | 'pickup-pyakasa'>('delivery');
   const [streetAddress, setStreetAddress] = useState(
     currentUser?.savedAddresses?.[0]?.streetAddress || ''
   );
@@ -65,12 +63,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
 
   // Delivery Fee computation
-  const deliveryFee =
-    fulfillmentType === 'delivery'
-      ? city === 'Lokoja'
-        ? settings.deliveryFeeLokoja
-        : settings.deliveryFeeAbuja
-      : 0;
+  const deliveryFee = fulfillmentType === 'delivery' ? settings.deliveryFeeAbuja : 0;
 
   const totalAmount = subtotal + deliveryFee;
 
@@ -115,7 +108,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
             ? {
                 fullName: name,
                 phone,
-                city,
+                city: `Abuja (${cityArea})`,
                 streetAddress,
                 landmark,
                 fulfillmentType: 'delivery',
@@ -262,7 +255,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
                   <Truck className="w-3.5 h-3.5 text-gold-500" />
                   2. Fulfillment & Delivery
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                   <label
                     className={`p-3.5 rounded-2xl border cursor-pointer flex flex-col justify-between transition-all ${
                       fulfillmentType === 'delivery'
@@ -279,17 +272,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
                       className="sr-only"
                     />
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-xs text-wine-900">Doorstep Delivery</span>
+                      <span className="font-bold text-xs text-wine-900">Doorstep Delivery (Abuja)</span>
                       <Truck className="w-4 h-4 text-wine-900" />
                     </div>
                     <span className="text-[11px] text-ink-500">
-                      {city === 'Lokoja' ? '₦1,500 (Lokoja)' : '₦2,500 (Abuja)'}
+                      {formatNaira(settings.deliveryFeeAbuja)} (Pyakasa, Airport Rd & Abuja environs)
                     </span>
                   </label>
 
                   <label
                     className={`p-3.5 rounded-2xl border cursor-pointer flex flex-col justify-between transition-all ${
-                      fulfillmentType === 'pickup-lokoja'
+                      fulfillmentType === 'pickup-pyakasa'
                         ? 'border-wine-900 bg-wine-50/60 ring-2 ring-wine-900/20'
                         : 'border-borderLine bg-white hover:bg-cream-50'
                     }`}
@@ -297,101 +290,67 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ onClose, onSuccess
                     <input
                       type="radio"
                       name="fulfillment"
-                      value="pickup-lokoja"
-                      checked={fulfillmentType === 'pickup-lokoja'}
-                      onChange={() => {
-                        setFulfillmentType('pickup-lokoja');
-                        setCity('Lokoja');
-                      }}
+                      value="pickup-pyakasa"
+                      checked={fulfillmentType === 'pickup-pyakasa'}
+                      onChange={() => setFulfillmentType('pickup-pyakasa')}
                       className="sr-only"
                     />
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-xs text-wine-900">Pickup — Lokoja</span>
+                      <span className="font-bold text-xs text-wine-900">Pickup — Pyakasa Hub</span>
                       <MapPin className="w-4 h-4 text-wine-900" />
                     </div>
-                    <span className="text-[11px] text-emerald-700 font-bold">FREE Pickup</span>
-                  </label>
-
-                  <label
-                    className={`p-3.5 rounded-2xl border cursor-pointer flex flex-col justify-between transition-all ${
-                      fulfillmentType === 'pickup-abuja'
-                        ? 'border-wine-900 bg-wine-50/60 ring-2 ring-wine-900/20'
-                        : 'border-borderLine bg-white hover:bg-cream-50'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="fulfillment"
-                      value="pickup-abuja"
-                      checked={fulfillmentType === 'pickup-abuja'}
-                      onChange={() => {
-                        setFulfillmentType('pickup-abuja');
-                        setCity('Abuja');
-                      }}
-                      className="sr-only"
-                    />
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-xs text-wine-900">Pickup — Abuja</span>
-                      <MapPin className="w-4 h-4 text-wine-900" />
-                    </div>
-                    <span className="text-[11px] text-emerald-700 font-bold">FREE Pickup</span>
+                    <span className="text-[11px] text-emerald-700 font-bold">FREE (Area G, Pyakasa)</span>
                   </label>
                 </div>
 
                 {/* Delivery Location inputs */}
                 {fulfillmentType === 'delivery' && (
                   <div className="p-4 rounded-2xl bg-cream-50/70 border border-borderLine space-y-3">
-                    <div className="flex items-center gap-4">
-                      <label className="text-xs font-bold text-ink-800">Select City:</label>
-                      <div className="flex items-center gap-4">
-                        <label className="flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
-                          <input
-                            type="radio"
-                            name="city"
-                            value="Lokoja"
-                            checked={city === 'Lokoja'}
-                            onChange={() => setCity('Lokoja')}
-                            className="text-wine-900 focus:ring-wine-900"
-                          />
-                          <span>Lokoja (₦1,500)</span>
-                        </label>
-                        <label className="flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
-                          <input
-                            type="radio"
-                            name="city"
-                            value="Abuja"
-                            checked={city === 'Abuja'}
-                            onChange={() => setCity('Abuja')}
-                            className="text-wine-900 focus:ring-wine-900"
-                          />
-                          <span>Abuja (₦2,500)</span>
-                        </label>
-                      </div>
+                    <div>
+                      <label className="block text-xs font-bold text-ink-800 mb-1">
+                        Abuja District / Delivery Area *
+                      </label>
+                      <select
+                        value={cityArea}
+                        onChange={(e) => setCityArea(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-borderLine text-xs font-semibold focus:border-wine-900 focus:outline-none bg-white"
+                      >
+                        <option value="Pyakasa (Direct Local Delivery)">Pyakasa (Direct Local Delivery)</option>
+                        <option value="Airport Road Corridor & Lugbe">Airport Road Corridor & Lugbe</option>
+                        <option value="Central Business District / Garki">Central Business District / Garki</option>
+                        <option value="Wuse 1 & Wuse 2">Wuse 1 & Wuse 2</option>
+                        <option value="Maitama & Asokoro">Maitama & Asokoro</option>
+                        <option value="Jabi, Utako & Lifecamp">Jabi, Utako & Lifecamp</option>
+                        <option value="Gwarinpa & Katampe">Gwarinpa & Katampe</option>
+                        <option value="Kubwa & Bwari Corridor">Kubwa & Bwari Corridor</option>
+                        <option value="Apo & Guzape">Apo & Guzape</option>
+                        <option value="Other Abuja Location">Other Abuja Location</option>
+                      </select>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs font-bold text-ink-800 mb-1">
-                          Street Address & Area *
+                          Street Address / House No. *
                         </label>
                         <input
                           type="text"
                           required
                           value={streetAddress}
                           onChange={(e) => setStreetAddress(e.target.value)}
-                          placeholder="e.g. House 5, Ganaja Estate / Plot 14 Wuse 2"
+                          placeholder="e.g. Area G, House 12 / Plot 45 Street"
                           className="w-full px-3.5 py-2.5 rounded-xl border border-borderLine text-sm focus:border-wine-900 focus:outline-none bg-white"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-ink-800 mb-1">
-                          Closest Landmark
+                          Closest Landmark / Junction
                         </label>
                         <input
                           type="text"
                           value={landmark}
                           onChange={(e) => setLandmark(e.target.value)}
-                          placeholder="e.g. Opposite Confluence Bank"
+                          placeholder="e.g. Near Pyakasa Market / Church Junction"
                           className="w-full px-3.5 py-2.5 rounded-xl border border-borderLine text-sm focus:border-wine-900 focus:outline-none bg-white"
                         />
                       </div>

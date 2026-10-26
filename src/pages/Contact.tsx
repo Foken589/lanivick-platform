@@ -19,8 +19,8 @@ export const Contact: React.FC = () => {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [city, setCity] = useState<'Lokoja' | 'Abuja' | 'Other'>('Lokoja');
-  const [subject, setSubject] = useState('General Question');
+  const [city, setCity] = useState<'Pyakasa' | 'Central Abuja' | 'Greater Abuja' | 'Other'>('Pyakasa');
+  const [subject, setSubject] = useState('Custom Cake Inquiry');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -36,10 +36,10 @@ export const Contact: React.FC = () => {
   };
 
   const handleWhatsAppSend = () => {
-    const formatted = `Hello Lanivick!
+    const formatted = `Hello Victoria! ✨
 My Name: ${name}
 Phone: ${phone}
-City: ${city}
+Location: ${city}
 Subject: ${subject}
 Message: ${message}`;
 
@@ -58,8 +58,7 @@ Message: ${message}`;
             We'd Love to Hear From You
           </h1>
           <p className="mt-3 text-sm text-ink-500">
-            Questions regarding an order, cake customization, salon appointment, or event catering?
-            Reach us by phone, WhatsApp, or through this form.
+            Questions regarding custom cake design, corporate breakfast boxes, small chops platters, or baking training? Reach Victoria and the Lanivick team directly.
           </p>
         </div>
 
@@ -69,7 +68,7 @@ Message: ${message}`;
             {/* Quick Action Channels */}
             <div className="p-6 rounded-3xl bg-wine-900 text-white shadow-elevated">
               <span className="text-[10px] font-bold uppercase tracking-wider text-gold-400 block mb-2">
-                Instant Response
+                Fast Response
               </span>
               <h3 className="font-serif text-2xl font-bold mb-4">Direct WhatsApp &amp; Call</h3>
 
@@ -78,7 +77,7 @@ Message: ${message}`;
                   onClick={() =>
                     openWhatsApp(
                       settings.whatsappNumber,
-                      'Hello Lanivick! I would like to inquire about your services.'
+                      'Hello Victoria! I would like to make an enquiry with Lanivick Confectionary.'
                     )
                   }
                   className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
@@ -97,31 +96,27 @@ Message: ${message}`;
               </div>
             </div>
 
-            {/* Studio Locations */}
+            {/* Bakery Location */}
             <div className="p-6 rounded-3xl bg-white border border-borderLine space-y-4">
               <h4 className="font-serif text-lg font-bold text-ink-900 flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-wine-900" />
-                <span>Our Physical Hubs</span>
+                <span>Our Bakery Hub</span>
               </h4>
 
               <div className="space-y-3 text-xs text-ink-800">
-                <div className="p-3 rounded-xl bg-cream-50 border border-borderLine">
-                  <span className="font-bold text-wine-900 block">📍 Lokoja Hub:</span>
-                  <p className="text-ink-500 mt-0.5">{settings.lokojaAddress}</p>
-                </div>
-
-                <div className="p-3 rounded-xl bg-cream-50 border border-borderLine">
-                  <span className="font-bold text-wine-900 block">📍 Abuja Branch:</span>
-                  <p className="text-ink-500 mt-0.5">{settings.abujaAddress}</p>
+                <div className="p-3.5 rounded-xl bg-cream-50 border border-borderLine">
+                  <span className="font-bold text-wine-900 block">📍 Central Bakery:</span>
+                  <p className="text-ink-700 mt-1 leading-relaxed">{settings.abujaAddress || 'Area G, Pyakasa, off Airport Road, Abuja, FCT, Nigeria'}</p>
+                  <p className="text-gold-700 font-semibold mt-1">📧 {settings.email || 'lanivick555@gmail.com'}</p>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-borderLine text-xs text-ink-500 flex items-start gap-2">
                 <Clock className="w-4 h-4 text-wine-900 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-ink-800 block">Business Hours:</span>
-                  <p>Monday – Saturday: 8:00 AM – 7:30 PM</p>
-                  <p>Sunday: 1:00 PM – 6:00 PM (By Pre-booking)</p>
+                  <span className="font-bold text-ink-800 block">Bakery Operating Hours:</span>
+                  <p>Monday – Saturday: 8:00 AM – 7:00 PM</p>
+                  <p>Sunday: Closed (Pre-orders Only)</p>
                 </div>
               </div>
             </div>
@@ -158,7 +153,7 @@ Message: ${message}`;
                         required
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        placeholder="0803 123 4567"
+                        placeholder="0916 222 6176"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-cream-50/50"
                       />
                     </div>
@@ -166,15 +161,16 @@ Message: ${message}`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-ink-900 mb-1">Your Location *</label>
+                      <label className="block text-xs font-bold text-ink-900 mb-1">Your Abuja Location *</label>
                       <select
                         value={city}
                         onChange={(e) => setCity(e.target.value as typeof city)}
                         className="w-full p-2.5 rounded-xl border border-borderLine text-xs font-medium focus:border-wine-900 focus:outline-none bg-cream-50/50"
                       >
-                        <option value="Lokoja">Lokoja, Kogi State</option>
-                        <option value="Abuja">Abuja, FCT</option>
-                        <option value="Other">Other Location</option>
+                        <option value="Pyakasa">Pyakasa / Airport Road</option>
+                        <option value="Central Abuja">Central Abuja (Wuse / Maitama / Garki)</option>
+                        <option value="Greater Abuja">Greater Abuja (Lugbe / Gwarinpa / Apo)</option>
+                        <option value="Other">Other Region / Outstation</option>
                       </select>
                     </div>
 
@@ -186,10 +182,10 @@ Message: ${message}`;
                         className="w-full p-2.5 rounded-xl border border-borderLine text-xs font-medium focus:border-wine-900 focus:outline-none bg-cream-50/50"
                       >
                         <option value="Custom Cake Inquiry">Custom Cake Inquiry</option>
-                        <option value="Event Catering Quote">Event Catering Quote</option>
-                        <option value="Hair Appointment Question">Hair Appointment Question</option>
-                        <option value="Home Service Booking">Home Service Booking</option>
-                        <option value="General Question">General Question</option>
+                        <option value="Office Breakfast Box Order">Office Breakfast Box Order</option>
+                        <option value="VIP Small Chops Platter">VIP Small Chops Platter</option>
+                        <option value="Baking & Pastry Training">Baking &amp; Pastry Training</option>
+                        <option value="General Confectionery Question">General Confectionery Question</option>
                       </select>
                     </div>
                   </div>
@@ -222,8 +218,7 @@ Message: ${message}`;
                 </div>
                 <h3 className="font-serif text-2xl font-bold text-ink-900 mb-2">Message Sent!</h3>
                 <p className="text-xs text-ink-500 max-w-sm mx-auto mb-6">
-                  Thank you, {name}. Your inquiry has been logged. Want a response in minutes?
-                  Send it directly to our WhatsApp.
+                  Thank you, {name}. Your inquiry has been logged. Want a response right away? Continue on WhatsApp.
                 </p>
 
                 <div className="flex flex-col gap-3 max-w-xs mx-auto">

@@ -24,13 +24,21 @@ export const Auth: React.FC = () => {
     }
 
     setIsLoading(true);
-    await login(email, password);
+    const success = await login(email, password);
     setIsLoading(false);
 
-    if (email.toLowerCase().includes('admin')) {
-      navigate('/admin');
-    } else {
-      navigate('/dashboard');
+    if (success) {
+      const cleanEmail = email.trim().toLowerCase();
+      if (
+        cleanEmail === 'lanivick555@gmail.com' ||
+        cleanEmail === 'ayubafyohanna@gmail.com' ||
+        cleanEmail === 'admin@lanivick.ng' ||
+        cleanEmail.includes('admin')
+      ) {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
@@ -67,8 +75,8 @@ export const Auth: React.FC = () => {
             {tab === 'forgot' && 'Reset Your Password'}
           </h2>
           <p className="text-xs text-ink-500 mt-1">
-            {tab === 'login' && 'Sign in to track orders, save hair bookings, and manage addresses.'}
-            {tab === 'signup' && 'Join Lanivick for seamless treats and priority hair styling.'}
+            {tab === 'login' && 'Sign in to track cake orders, save favorite treats, and manage delivery addresses.'}
+            {tab === 'signup' && 'Join Lanivick for freshly baked treats, custom celebration cakes, and priority Abuja delivery.'}
             {tab === 'forgot' && 'Enter your email to receive recovery instructions.'}
           </p>
         </div>
@@ -252,39 +260,6 @@ export const Auth: React.FC = () => {
             </button>
           </form>
         )}
-
-        {/* Fast 1-Click Demo Switcher Section */}
-        <div className="mt-8 pt-6 border-t border-borderLine">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-ink-500 block text-center mb-3">
-            Instant Demo Account Access
-          </span>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                loginDemoCustomer();
-                navigate('/dashboard');
-              }}
-              className="p-2.5 rounded-xl border border-borderLine bg-cream-50 hover:bg-cream-100 text-xs font-bold text-ink-800 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <User className="w-3.5 h-3.5 text-wine-900" />
-              <span>Demo Customer</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                loginDemoAdmin();
-                navigate('/admin');
-              }}
-              className="p-2.5 rounded-xl border border-wine-300 bg-wine-50 hover:bg-wine-100 text-xs font-bold text-wine-900 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-wine-900" />
-              <span>Demo Admin</span>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

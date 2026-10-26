@@ -110,8 +110,8 @@ export const CakesPastries: React.FC = () => {
             <div className="lg:col-span-4 hidden lg:block">
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white aspect-square">
                 <img
-                  src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=600&auto=format&fit=crop&q=80"
-                  alt="Custom Cake"
+                  src="/images/products/cake-strawberry-drip.jpg"
+                  alt="Custom Cake by Lanivick"
                   className="w-full h-full object-cover"
                 />
               </div>

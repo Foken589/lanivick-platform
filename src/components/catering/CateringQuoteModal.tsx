@@ -25,30 +25,32 @@ interface CateringQuoteModalProps {
   onClose: () => void;
 }
 
-const CUISINES = [
-  'Smoky Party Jollof & Fried Rice',
-  'Assorted Peppered Proteins (Beef, Chicken, Fish, Goat)',
-  'Lanivick VIP Small Chops & Canapés Platter',
-  'Continental Pasta (Alfredo / Bolognese) & Salads',
-  'Traditional Soups & Swallows (Egusi, Pounded Yam, Vegetable)',
-  'Dessert Station (Mini Parfaits, Cupcakes, Fruit Skewers)',
+const CONFECTIONERY_STATIONS = [
+  'VIP Small Chops Platters (Puff-Puffs, Samosas, Spring Rolls & Peppered Bites)',
+  'Executive Office Breakfast Boxes (Meat/Chicken Pies, Rolls & Juices)',
+  'Milestone Celebration Cakes & Multi-Tier Wedding Tiers',
+  'Gourmet Pastry Buffet (Flaky Pies, Glazed Doughnuts, Scotch Eggs)',
+  'Natural Fruit Drinks & Greek Yogurt Parfait Station',
+  'Packaged Party Favours (Chin-Chin Jars, Cookies & Brownie Boxes)',
 ];
 
 const EVENT_TYPES: CateringEventType[] = [
-  'Wedding',
-  'Birthday Party',
   'Corporate Event',
-  'Private Dinner',
-  'Funeral Banquet',
+  'Birthday Party',
+  'Wedding',
+  'Office Breakfast',
+  'Anniversary',
   'Graduation',
+  'School Event',
+  'Church Function',
   'Other',
 ];
 
 const BUDGETS = [
-  '₦150,000 – ₦350,000 (Intimate 20-40 Guests)',
-  '₦350,000 – ₦750,000 (Medium 50-100 Guests)',
-  '₦750,000 – ₦1,500,000 (Grand 120-250 Guests)',
-  '₦1,500,000 – ₦3,500,000+ (Banquet 300-600+ Guests)',
+  '₦30,000 – ₦80,000 (Small / Team Pack)',
+  '₦80,000 – ₦250,000 (Medium Event 30-70 Guests)',
+  '₦250,000 – ₦600,000 (Large Event 80-200 Guests)',
+  '₦600,000 – ₦1,500,000+ (Grand Banquet 200+ Guests)',
 ];
 
 export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose }) => {
@@ -60,19 +62,18 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
   const [customerPhone, setCustomerPhone] = useState(currentUser?.phone || '');
   const [customerEmail, setCustomerEmail] = useState(currentUser?.email || '');
 
-  const [eventType, setEventType] = useState<CateringEventType>('Wedding');
+  const [eventType, setEventType] = useState<CateringEventType>('Corporate Event');
   const [eventDate, setEventDate] = useState(() => {
     const d = new Date();
-    d.setDate(d.getDate() + 14);
+    d.setDate(d.getDate() + 7);
     return d.toISOString().split('T')[0];
   });
-  const [city, setCity] = useState<'Lokoja' | 'Abuja' | 'Other'>('Abuja');
+  const [city, setCity] = useState<'Abuja' | 'Pyakasa' | 'Other'>('Abuja');
   const [eventLocation, setEventLocation] = useState('');
-  const [guestCount, setGuestCount] = useState<number>(80);
+  const [guestCount, setGuestCount] = useState<number>(50);
   const [cuisinePreference, setCuisinePreference] = useState<string[]>([
-    CUISINES[0],
-    CUISINES[1],
-    CUISINES[2],
+    CONFECTIONERY_STATIONS[0],
+    CONFECTIONERY_STATIONS[1],
   ]);
   const [budgetRange, setBudgetRange] = useState<string>(BUDGETS[1]);
   const [dietaryRequirements, setDietaryRequirements] = useState('');
@@ -81,15 +82,15 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRequest, setSubmittedRequest] = useState<CateringRequest | null>(null);
 
-  const toggleCuisine = (item: string) => {
+  const toggleStation = (item: string) => {
     setCuisinePreference((prev) =>
       prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]
     );
   };
 
-  // Rough estimation guideline: ~₦4,500 - ₦6,500 per guest depending on cuisines
-  const baseCostPerPlate = 4500 + (cuisinePreference.length > 3 ? (cuisinePreference.length - 3) * 800 : 0);
-  const estimatedTotalQuote = guestCount * baseCostPerPlate;
+  // Rough estimation guideline: ~₦3,000 - ₦4,500 per guest/box based on selected stations
+  const baseCostPerGuest = 2500 + cuisinePreference.length * 500;
+  const estimatedTotalQuote = guestCount * baseCostPerGuest;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,7 +101,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
     }
 
     if (cuisinePreference.length === 0) {
-      showToast('Please select at least one cuisine preference.', 'warning');
+      showToast('Please select at least one confectionery service or menu station.', 'warning');
       return;
     }
 
@@ -136,13 +137,13 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#6d1530', '#d8a83e', '#fff8ed'],
+        colors: ['#7A1234', '#D8A83E', '#FFF7F0'],
       });
     } catch {
       // safe
     }
 
-    showToast(`Catering request #${requestId} submitted successfully!`, 'success');
+    showToast(`Confectionery quote request #${requestId} submitted successfully!`, 'success');
   };
 
   return (
@@ -156,14 +157,14 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
             <div className="flex items-center justify-between pb-4 border-b border-borderLine">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-cream-100 flex items-center justify-center text-xl">
-                  🍲
+                  🎂
                 </div>
                 <div>
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-wine-900">
-                    Event Catering Concierge
+                    Confectionery &amp; Event Concierge
                   </span>
                   <h2 className="font-serif text-xl sm:text-2xl font-bold text-ink-900">
-                    Request Catering Quote
+                    Request Services &amp; Event Quote
                   </h2>
                 </div>
               </div>
@@ -181,11 +182,11 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
               <div>
                 <label className="block text-xs font-bold text-ink-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-                  1. Event Details & Scale
+                  1. Event Details &amp; Quantity
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-ink-800 mb-1">Occasion / Event Type *</label>
+                    <label className="block text-xs font-semibold text-ink-800 mb-1">Occasion / Service Type *</label>
                     <select
                       value={eventType}
                       onChange={(e) => setEventType(e.target.value as CateringEventType)}
@@ -202,21 +203,21 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                   <div>
                     <label className="block text-xs font-semibold text-ink-800 mb-1 flex items-center gap-1">
                       <Users className="w-3.5 h-3.5 text-wine-900" />
-                      Expected Number of Guests: <span className="font-bold text-wine-900">{guestCount}</span>
+                      Guest Count / Breakfast Packs: <span className="font-bold text-wine-900">{guestCount}</span>
                     </label>
                     <input
                       type="range"
-                      min={20}
-                      max={800}
+                      min={10}
+                      max={500}
                       step={10}
                       value={guestCount}
                       onChange={(e) => setGuestCount(Number(e.target.value))}
                       className="w-full accent-wine-900"
                     />
                     <div className="flex justify-between text-[10px] text-ink-500 mt-1">
-                      <span>20 (Intimate)</span>
-                      <span>150 (Mid-size)</span>
-                      <span>500+ (Grand Banquet)</span>
+                      <span>10 (Team)</span>
+                      <span>100 (Corporate)</span>
+                      <span>500+ (Banquet)</span>
                     </div>
                   </div>
                 </div>
@@ -226,13 +227,13 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
               <div>
                 <label className="block text-xs font-bold text-ink-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gold-500" />
-                  2. Date & Venue
+                  2. Date &amp; Delivery Location
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-ink-800 mb-1 flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-wine-900" />
-                      Event Date *
+                      Required Date *
                     </label>
                     <input
                       type="date"
@@ -245,57 +246,57 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-ink-800 mb-1">City Hub *</label>
+                    <label className="block text-xs font-semibold text-ink-800 mb-1">Abuja Area *</label>
                     <select
                       value={city}
-                      onChange={(e) => setCity(e.target.value as 'Lokoja' | 'Abuja' | 'Other')}
+                      onChange={(e) => setCity(e.target.value as 'Abuja' | 'Pyakasa' | 'Other')}
                       className="w-full p-2.5 rounded-xl border border-borderLine text-xs font-medium focus:border-wine-900 focus:outline-none bg-cream-50/50"
                     >
-                      <option value="Lokoja">Lokoja, Kogi State</option>
-                      <option value="Abuja">Abuja, FCT</option>
-                      <option value="Other">Other Region / Outstation</option>
+                      <option value="Pyakasa">Pyakasa / Airport Road</option>
+                      <option value="Abuja">Central Abuja / Wuse / Maitama / Garki</option>
+                      <option value="Other">Greater Abuja / Other FCT District</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-ink-800 mb-1">Venue / Event Hall *</label>
+                    <label className="block text-xs font-semibold text-ink-800 mb-1">Venue / Office Address *</label>
                     <input
                       type="text"
                       required
                       value={eventLocation}
                       onChange={(e) => setEventLocation(e.target.value)}
-                      placeholder="e.g. City Event Hall / Private Residence"
+                      placeholder="e.g. Office Complex / Event Hall"
                       className="w-full px-3 py-2.5 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-cream-50/50"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* 3. Desired Cuisines & Menu */}
+              {/* 3. Desired Confectionery Menu Stations */}
               <div>
                 <label className="block text-xs font-bold text-ink-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Utensils className="w-3.5 h-3.5 text-gold-500" />
-                  3. Select Menu Preferences (Select all that apply)
+                  3. Select Services &amp; Menu Offerings
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {CUISINES.map((cuisine) => {
-                    const isChecked = cuisinePreference.includes(cuisine);
+                  {CONFECTIONERY_STATIONS.map((station) => {
+                    const isChecked = cuisinePreference.includes(station);
                     return (
                       <label
-                        key={cuisine}
-                        onClick={() => toggleCuisine(cuisine)}
+                        key={station}
+                        onClick={() => toggleStation(station)}
                         className={`p-2.5 rounded-xl border cursor-pointer flex items-center justify-between text-xs transition-all ${
                           isChecked
                             ? 'border-wine-900 bg-wine-50 font-bold text-wine-900'
                             : 'border-borderLine text-ink-800 hover:bg-cream-50'
                         }`}
                       >
-                        <span>{cuisine}</span>
+                        <span className="leading-snug pr-2">{station}</span>
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => {}}
-                          className="accent-wine-900 rounded"
+                          className="accent-wine-900 rounded shrink-0"
                         />
                       </label>
                     );
@@ -306,7 +307,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
               {/* 4. Budget Range */}
               <div>
                 <label className="block text-xs font-bold text-ink-900 uppercase tracking-wider mb-1">
-                  4. Approximate Catering Budget
+                  4. Approximate Budget Guide
                 </label>
                 <select
                   value={budgetRange}
@@ -324,7 +325,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
               {/* 5. Contact Details */}
               <div className="p-4 rounded-2xl bg-cream-50/70 border border-borderLine">
                 <label className="block text-xs font-bold text-ink-900 uppercase tracking-wider mb-2">
-                  5. Contact & Coordination
+                  5. Contact &amp; Coordination
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
@@ -345,7 +346,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                       required
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
-                      placeholder="0803 700 8821"
+                      placeholder="0916 222 6176"
                       className="w-full px-3 py-2 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-white"
                     />
                   </div>
@@ -355,7 +356,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                       type="email"
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
-                      placeholder="email@domain.com"
+                      placeholder="lanivick555@gmail.com"
                       className="w-full px-3 py-2 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-white"
                     />
                   </div>
@@ -363,13 +364,13 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
 
                 <div className="mt-3">
                   <label className="block text-xs font-semibold text-ink-800 mb-1">
-                    Special Setup / Dietary Requirements
+                    Special Packaging, Cake Flavor, or Dietary Instructions
                   </label>
                   <textarea
                     rows={2}
                     value={specialRequests}
                     onChange={(e) => setSpecialRequests(e.target.value)}
-                    placeholder="e.g. Need chaffing dish buffet line, 3 uniform serving stewards, halal proteins only."
+                    placeholder="e.g. Individual office boxes, need 20 meat pies swapped for chicken pies, delivery required by 8:30 AM."
                     className="w-full px-3 py-2 rounded-xl border border-borderLine text-xs focus:border-wine-900 focus:outline-none bg-white"
                   />
                 </div>
@@ -379,7 +380,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
               <div className="pt-4 border-t border-borderLine flex items-center justify-between gap-4">
                 <div>
                   <span className="text-[11px] text-ink-500 block">
-                    Estimated Baseline ({guestCount} guests):
+                    Estimated Cost ({guestCount} packs/guests):
                   </span>
                   <span className="font-serif text-2xl font-extrabold text-wine-900">
                     ~{formatNaira(estimatedTotalQuote)}
@@ -392,7 +393,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                   className="py-3 px-6 rounded-2xl bg-wine-900 hover:bg-wine-800 text-white font-bold text-sm shadow-elevated flex items-center gap-2 transition-all active:scale-98 disabled:opacity-50"
                 >
                   <Sparkles className="w-4 h-4 text-gold-400" />
-                  <span>Send Catering Request</span>
+                  <span>Send Quotation Request</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -414,7 +415,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
             </h2>
             <p className="text-sm text-ink-500 max-w-md mx-auto">
               Inquiry <span className="font-bold text-wine-900">#{submittedRequest.id}</span> for your{' '}
-              <span className="font-bold text-ink-800">{submittedRequest.eventType}</span> ({submittedRequest.guestCount} guests) is on Victoria's desk.
+              <span className="font-bold text-ink-800">{submittedRequest.eventType}</span> ({submittedRequest.guestCount} units/guests) has been received by Victoria Lanishe.
             </p>
 
             <div className="my-6 p-5 rounded-2xl bg-cream-50 border border-borderLine text-left text-xs space-y-2">
@@ -423,7 +424,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                 <span className="font-bold font-mono text-ink-900">#{submittedRequest.id}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ink-500">Date & Location:</span>
+                <span className="text-ink-500">Date &amp; Location:</span>
                 <span className="font-semibold text-ink-800">
                   {submittedRequest.eventDate} • {submittedRequest.city} ({submittedRequest.eventLocation})
                 </span>
@@ -433,9 +434,9 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                 <span className="font-semibold text-ink-800">{submittedRequest.budgetRange}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ink-500">Selected Cuisines:</span>
+                <span className="text-ink-500">Selected Services:</span>
                 <span className="font-semibold text-wine-900">
-                  {submittedRequest.cuisinePreference.length} menu stations
+                  {submittedRequest.cuisinePreference.length} stations/services
                 </span>
               </div>
             </div>
@@ -451,7 +452,7 @@ export const CateringQuoteModal: React.FC<CateringQuoteModalProps> = ({ onClose 
                 className="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5 text-white" />
-                <span>Send Catering Inquiry Directly on WhatsApp</span>
+                <span>Send Quotation Directly on WhatsApp</span>
               </button>
 
               <button
